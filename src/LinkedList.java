@@ -38,14 +38,10 @@ public class LinkedList<T> {
 	
 	public void addNodeToHead(Node<T> aNode) {
 		if (isEmpty() ) {
-			head = aNode;
-			tail=head;
-			return;
+			addNode(aNode);
 		}
-		Node<T> oldHead = head;
-		aNode = head;
-		tail = oldHead;
-		head.nextNode = tail;
+		head.setNextNode(head);
+		head = aNode;
 	}
 	
 	/**
