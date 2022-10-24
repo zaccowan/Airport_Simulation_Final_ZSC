@@ -41,10 +41,11 @@ public class Airport extends TimerTask {
 				planeApproaching.enqueue(newPlane);
 				planesSpawned++;
 				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
-				planeApproaching.printQueue();
+				planeApproaching.printQueue("Approaching:");
+				readyToLand.printQueue("Ready To Land:");
 			}
 		}
-		System.out.println(displayTick);
+//		System.out.println(displayTick);
 		displayTick++;
 	}
 	

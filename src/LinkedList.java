@@ -40,8 +40,9 @@ public class LinkedList<T> {
 		if (isEmpty() ) {
 			addNode(aNode);
 		}
-		head.setNextNode(head);
+		Node<T> oldHead = head;
 		head = aNode;
+		head.setNextNode(oldHead.getNode());
 	}
 	
 	/**
