@@ -1,4 +1,5 @@
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +17,7 @@ public class Airport extends TimerTask {
 	//Settings for simulation
 	final private int MAX_PLANES = 1000;
 	private double spawnRate = 0.7;
-	private double emergencyRate = .1;
+	private double emergencyRate = 0.1;
 	
 	//
 	//
@@ -29,12 +30,16 @@ public class Airport extends TimerTask {
 	public void run() {
 		double spawnSeed = Math.random();
 		if( spawnSeed < spawnRate ) {
+			clear();
 			newPlane = new Airplane();
 			newPlane.setPlaneId(planesSpawned);
 			if( spawnSeed < emergencyRate ) {
 				planeApproaching.enqueueFront(newPlane);
 				planesSpawned++;
 				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
+				readyToLand.enqueue(planeApproaching.dequeue().getNode().getData());
+				planeApproaching.printQueue("Approaching:");
+				readyToLand.printQueue("Ready To Land:");
 				
 			}
 			else {
@@ -45,6 +50,9 @@ public class Airport extends TimerTask {
 				readyToLand.printQueue("Ready To Land:");
 			}
 		}
+		
+		
+
 //		System.out.println(displayTick);
 		displayTick++;
 	}
@@ -81,6 +89,17 @@ public class Airport extends TimerTask {
 	public void setEmergencyRate(double emergencyRate) {
 		this.emergencyRate = emergencyRate;
 	}
+	
+	public static void clear()
+    {
+        try
+        {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException | InterruptedException ex) {}
+    }
 	
 	
 	
