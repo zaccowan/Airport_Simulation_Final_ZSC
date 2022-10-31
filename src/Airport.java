@@ -17,7 +17,7 @@ public class Airport extends TimerTask {
 	//
 	//
 	//Settings for simulation
-	final private int MAX_PLANES = 1000;
+	final private int MAX_PLANES = 20;
 	private double spawnRate = 0.7;
 	private double emergencyRate = 0.1;
 	
@@ -31,38 +31,40 @@ public class Airport extends TimerTask {
 	@Override
 	public void run() {
 		double spawnSeed = Math.random();
-		if( spawnSeed < spawnRate ) {
+		if( (spawnSeed < spawnRate) && (planesSpawned <= MAX_PLANES) ) {
 			clear();
+			
+			//Newly spawned plane info
 			newPlane = new Airplane();
 			newPlane.setPlaneId(planesSpawned);
+			planesSpawned++;
+			
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < emergencyRate ) {
 				planeApproaching.enqueueFront(newPlane);
-				planesSpawned++;
-				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
-				priorityAddToLeastBusyRunway();
-				planeApproaching.printQueue("Approaching:");
-				runway1.printWaitingQueue();
 				
+				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
+				System.out.println();
+				
+				priorityAddToLeastBusyRunway();
 			}
 			//If not emergency plane add to queue
 			else {
 				planeApproaching.enqueue(newPlane);
-				planesSpawned++;
+				
 				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
+				System.out.println();
+				
 				addToLeastBusyRunway();
 			}
 			
+			
 			planeApproaching.printQueue("Approaching");
-			System.out.println();
 			runway1.printWaitingQueue();
 			runway2.printWaitingQueue();
 			runway3.printWaitingQueue();
 		}
-		
-		
-
-//		System.out.println(displayTick);
+		//Tick is every 1000 milliseconds
 		displayTick++;
 	}
 	
