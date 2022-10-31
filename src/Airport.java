@@ -9,7 +9,9 @@ public class Airport extends TimerTask {
 	//
 	//Queues for managing planes
 	private PriorityQueue<Airplane> planeApproaching = new PriorityQueue<Airplane>();
-	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
+	private Runway runway1 = new Runway(1);
+	private Runway runway2 = new Runway(2);
+	private Runway runway3 = new Runway(3);
 	private Airplane newPlane;
 	
 	//
@@ -37,9 +39,9 @@ public class Airport extends TimerTask {
 				planeApproaching.enqueueFront(newPlane);
 				planesSpawned++;
 				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
-				readyToLand.enqueue(planeApproaching.dequeue().getNode().getData());
+				runway1.sendToRunway(planeApproaching.dequeue().getNode().getData());
 				planeApproaching.printQueue("Approaching:");
-				readyToLand.printQueue("Ready To Land:");
+				runway1.printWaitingQueue();
 				
 			}
 			else {
@@ -47,7 +49,7 @@ public class Airport extends TimerTask {
 				planesSpawned++;
 				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
 				planeApproaching.printQueue("Approaching:");
-				readyToLand.printQueue("Ready To Land:");
+				runway1.printWaitingQueue();
 			}
 		}
 		
