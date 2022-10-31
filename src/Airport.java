@@ -35,22 +35,29 @@ public class Airport extends TimerTask {
 			clear();
 			newPlane = new Airplane();
 			newPlane.setPlaneId(planesSpawned);
+			//If Emergency Plane prioritize approach
 			if( spawnSeed < emergencyRate ) {
 				planeApproaching.enqueueFront(newPlane);
 				planesSpawned++;
 				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
-				runway1.sendToRunway(planeApproaching.dequeue().getNode().getData());
+				priorityAddToLeastBusyRunway();
 				planeApproaching.printQueue("Approaching:");
 				runway1.printWaitingQueue();
 				
 			}
+			//If not emergency plane add to queue
 			else {
 				planeApproaching.enqueue(newPlane);
 				planesSpawned++;
 				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
-				planeApproaching.printQueue("Approaching:");
-				runway1.printWaitingQueue();
+				addToLeastBusyRunway();
 			}
+			
+			planeApproaching.printQueue("Approaching");
+			System.out.println();
+			runway1.printWaitingQueue();
+			runway2.printWaitingQueue();
+			runway3.printWaitingQueue();
 		}
 		
 		
@@ -102,6 +109,36 @@ public class Airport extends TimerTask {
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
     }
+	
+	private void addToLeastBusyRunway() {
+		if( (runway1.getNumWaiting() <= runway2.getNumWaiting()) && (runway1.getNumWaiting() <= runway3.getNumWaiting()) ) {
+			runway1.sendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else if( (runway2.getNumWaiting() <= runway1.getNumWaiting()) && (runway1.getNumWaiting() <= runway3.getNumWaiting()) ) {
+			runway2.sendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else if( (runway3.getNumWaiting() <= runway1.getNumWaiting()) && (runway3.getNumWaiting() <= runway2.getNumWaiting()) ) {
+			runway3.sendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else {
+			runway1.sendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+	}
+	
+	private void priorityAddToLeastBusyRunway() {
+		if( (runway1.getNumWaiting() <= runway2.getNumWaiting()) && (runway1.getNumWaiting() <= runway3.getNumWaiting()) ) {
+			runway1.prioritySendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else if( (runway2.getNumWaiting() <= runway1.getNumWaiting()) && (runway1.getNumWaiting() <= runway3.getNumWaiting()) ) {
+			runway2.prioritySendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else if( (runway3.getNumWaiting() <= runway1.getNumWaiting()) && (runway3.getNumWaiting() <= runway2.getNumWaiting()) ) {
+			runway3.prioritySendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+		else {
+			runway1.prioritySendToRunway(planeApproaching.dequeue().getNode().getData());
+		}
+	}
 	
 	
 	

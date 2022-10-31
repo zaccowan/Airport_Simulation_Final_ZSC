@@ -12,9 +12,14 @@ public class Runway {
 	}
 	
 	public void sendToRunway(Airplane plane) {
-		numWaiting++;
+		numWaiting += 1;
 		readyToLand.enqueue(plane);
 	}
+	public void prioritySendToRunway(Airplane plane) {
+		numWaiting += 1;
+		readyToLand.enqueueFront(plane);
+	}
+	
 	
 	public void printWaitingQueue() {
 		readyToLand.printQueue("Runway " + runwayId + " queue:");
@@ -22,10 +27,13 @@ public class Runway {
 	
 	public void planeProcessed() {
 		if( !readyToLand.isEmpty() ) {
-			numWaiting--;
+			numWaiting -= 1;
 			numPlanesProcessed++;
 			previousLanded = readyToLand.dequeue().getData();
 		}
+	}
+	public boolean isEmpty() {
+		return readyToLand.isEmpty();
 	}
 
 	//
