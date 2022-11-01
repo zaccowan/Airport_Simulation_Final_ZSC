@@ -1,25 +1,47 @@
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Airplane {
+public class Airplane extends TimerTask {
 
 	private int planeId;
-	private double milesFromAirport = 5;
+	private int milesFromAirport;
+	
+	static Timer simClock = new Timer();
+	
+	Airplane() {
+		milesFromAirport = 5;
+		simClock.schedule(this, 0, 2000);
+	}
+	
+	@Override
+	public void run() {
+		if( milesFromAirport > 0 ) {
+			milesFromAirport--;;
+		}
+		
+	}
 
 	public int getPlaneId() {
 		return planeId;
 	}
 	
 	public String toString() {
-		return "plane " + String.valueOf(getPlaneId());
+		if( getDistance() == 0 ) {
+			return "plane " + String.valueOf(getPlaneId());
+		}
+		return "plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
 	}
 	public void setPlaneId(int num) {
 		planeId = num;
 	}
 
-	public double getDistance() {
+	public int  getDistance() {
 		return milesFromAirport;
 	}
 
-	public void decrementDistance(double decrementValue) {
-		this.milesFromAirport = getDistance() - decrementValue;
+	public void setDistance(int distance) {
+		this.milesFromAirport = distance;
 	}
+
+	
 }

@@ -130,7 +130,7 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 		System.out.print( message + "\n");
 		while (currentNode != null) {
 			if( currentNode.getData() != null) {
-				System.out.print("\t" + currentNode.getData() + "\n");
+				System.out.print("\t" + currentNode.getData().toString() + "\n");
 			}
 			currentNode = currentNode.getNextNode();
 		}

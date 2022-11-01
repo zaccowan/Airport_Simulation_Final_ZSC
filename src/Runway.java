@@ -1,5 +1,7 @@
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Runway {
+public class Runway extends TimerTask {
 
 	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
 	private Airplane previousLanded;
@@ -7,8 +9,21 @@ public class Runway {
 	private int numPlanesProcessed = 0;
 	private int numWaiting = 0;
 	
+	static Timer simClock = new Timer();
+	
 	Runway(int runwayId) {
+		simClock.schedule(this, 0, 10000);
 		this.setRunwayId(runwayId);
+	}
+	
+	@Override
+	public void run() {
+		if( !readyToLand.isEmpty()) {
+			numWaiting -= 1;
+			numPlanesProcessed += 1;
+			previousLanded = readyToLand.dequeue().getData();
+		}
+		
 	}
 	
 	public void sendToRunway(Airplane plane) {
@@ -57,6 +72,7 @@ public class Runway {
 	public int getNumWaiting() {
 		return numWaiting;
 	}
+
 	
 	
 	

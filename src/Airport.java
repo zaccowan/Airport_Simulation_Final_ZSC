@@ -24,23 +24,26 @@ public class Airport extends TimerTask {
 	//
 	//
 	// Simulation Timer
-	Timer simClock = new Timer();
-	public static int planesSpawned = 1;
+	static Timer simClock = new Timer();
+	public int planesSpawned = 1;
 	public static int displayTick = 0;
 	
 	@Override
 	public void run() {
+		clear();
 		double spawnSeed = Math.random();
 		if( (spawnSeed < spawnRate) && (planesSpawned <= MAX_PLANES) ) {
-			clear();
 			
 			//Newly spawned plane info
 			newPlane = new Airplane();
-			newPlane.setPlaneId(planesSpawned);
 			planesSpawned++;
+			newPlane.setPlaneId(planesSpawned);
+			newPlane.setDistance(5);
+			
 			
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < emergencyRate ) {
+				newPlane.setDistance(0);
 				planeApproaching.enqueueFront(newPlane);
 				
 				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
@@ -55,15 +58,27 @@ public class Airport extends TimerTask {
 				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
 				System.out.println();
 				
-				addToLeastBusyRunway();
+				if( planeApproaching.getFront().getData().getDistance() == 0 ) {
+					addToLeastBusyRunway();
+				}
 			}
-			
-			
-			planeApproaching.printQueue("Approaching");
+		}
+		
+		
+		
+		//Handling Last plane to approach airport
+		if ( planesSpawned == MAX_PLANES ) {
+			addToLeastBusyRunway();
+		}
+		
+		//Printing Runway Queues
+		if( !runway1.isEmpty() || !runway2.isEmpty() || !runway3.isEmpty() ) {
+			planeApproaching.printQueue("Approaching:");
 			runway1.printWaitingQueue();
 			runway2.printWaitingQueue();
 			runway3.printWaitingQueue();
 		}
+		
 		//Tick is every 1000 milliseconds
 		displayTick++;
 	}
