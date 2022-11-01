@@ -36,31 +36,31 @@ public class Airport extends TimerTask {
 			
 			//Newly spawned plane info
 			newPlane = new Airplane();
-			planesSpawned++;
 			newPlane.setPlaneId(planesSpawned);
 			newPlane.setDistance(5);
+			newPlane.setEmergency(false);
+			planesSpawned++;
 			
 			
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < emergencyRate ) {
-				newPlane.setDistance(0);
-				planeApproaching.enqueueFront(newPlane);
+				newPlane.setEmergency(true);
+				planeApproaching.enqueue(newPlane);
 				
-				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
+//				System.out.println("Emergency with plane: " + newPlane.getPlaneId() + ". Prioritizing Landing.");
 				System.out.println();
 				
 				priorityAddToLeastBusyRunway();
+				
 			}
 			//If not emergency plane add to queue
 			else {
 				planeApproaching.enqueue(newPlane);
 				
-				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
+//				System.out.println("Airplane: " + newPlane.getPlaneId() + " approaching.");
 				System.out.println();
 				
-				if( planeApproaching.getFront().getData().getDistance() == 0 ) {
-					addToLeastBusyRunway();
-				}
+				addToLeastBusyRunway();
 			}
 		}
 		
