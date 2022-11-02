@@ -17,8 +17,8 @@ public class Airport extends TimerTask {
 	 * Default uses 3 runways.
 	 */
 	Airport() {
-		
-		planeApproaching = new PriorityQueue<Airplane>();
+		simClock = new Timer();
+		planesApproaching = new PriorityQueue<Airplane>();
 		runwayStorage = new Runway[3];
 		runwayStorage[0] = new Runway(1);
 		runwayStorage[1] = new Runway(2);
@@ -37,7 +37,7 @@ public class Airport extends TimerTask {
 		setMaxPlanes(maxPlanes);
 		setSpawnRate(spawnRate);
 		setEmergencyRate(emergencyRate);
-		planeApproaching = new PriorityQueue<Airplane>();
+		planesApproaching = new PriorityQueue<Airplane>();
 		runwayStorage = new Runway[3];
 		runwayStorage[0] = new Runway(1);
 		runwayStorage[1] = new Runway(2);
@@ -52,7 +52,7 @@ public class Airport extends TimerTask {
 		simClock = new Timer();
 		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
 			runwayStorage = new Runway[numberOfRunways];
-			planeApproaching = new PriorityQueue<Airplane>();
+			planesApproaching = new PriorityQueue<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
 				runwayStorage[index] = new Runway(index+1);
 			}
@@ -62,12 +62,12 @@ public class Airport extends TimerTask {
 	//
 	//
 	//Queues for managing planes
-	private PriorityQueue<Airplane> planeApproaching = new PriorityQueue<Airplane>();
+	private PriorityQueue<Airplane> planesApproaching = new PriorityQueue<Airplane>();
 	private Runway[] runwayStorage;
 	private Airplane newPlane;
 	
 	private int indexOfLastRunway = 0;
-	private int runwaysEmpty = 0;
+	int totalProcessed = 0;
 	
 	//
 	//
@@ -114,25 +114,29 @@ public class Airport extends TimerTask {
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < EMERGENCY_RATE ) {
 				newPlane.setEmergency(true);
-				planeApproaching.enqueueFront(newPlane);
+				planesApproaching.enqueueFront(newPlane);
 				addToLeastBusyRunway();
 			} else {
-				planeApproaching.enqueue(newPlane);
+				planesApproaching.enqueue(newPlane);
 				addToLeastBusyRunway();
 			}
 		}
 		
 		//Printing Queues
-		planeApproaching.printQueue("Approaching:");
+		planesApproaching.printQueue("Approaching:");
+		System.out.println(totalProcessed);
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
 		}
 				
 		
-//		if( (planeNum == MAX_PLANES) ) {
-//			System.out.println("All " + planeNum + " planes processed in " + simTime + " seconds.\n\tAirport used " + runwayStorage.length + " runways.");
-//			cancel();
-//		}
+		//Ending timer.
+		for( Runway runway : runwayStorage ) {
+			totalProcessed += runway.getNumPlanesProcessed();
+		}
+		if( totalProcessed == MAX_PLANES ) {
+			System.out.println( totalProcessed +  " planes were processed in " + simTime + " seconds.\nUsing " + runwayStorage.length + " runways." );
+		}
 		
 		if( planeNum == MAX_PLANES ) {
 			addToLeastBusyRunway();
@@ -233,13 +237,13 @@ public class Airport extends TimerTask {
 	 * Conditional Logic to send plane in approaching queue to the least busy runway.
 	 */
 	private void addToLeastBusyRunway() {
-		if( !planeApproaching.isEmpty() ) {
+		if( !planesApproaching.isEmpty() ) {
 			if( indexOfLastRunway < (runwayStorage.length) ) {
-				runwayStorage[indexOfLastRunway].sendToRunway(planeApproaching.dequeue().getData());
+				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.dequeue().getData());
 				indexOfLastRunway++;
 			} else {
 				indexOfLastRunway = 0;
-				runwayStorage[indexOfLastRunway].sendToRunway(planeApproaching.dequeue().getData());
+				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.dequeue().getData());
 				indexOfLastRunway++;
 			}
 		}

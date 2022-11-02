@@ -12,14 +12,16 @@ public class Airplane extends TimerTask {
 	private int planeId;
 	private int milesFromAirport;
 	private boolean isEmergency;
-	private boolean hasArrived = false;
+	private boolean hasArrived;
 	
-	private static Timer simClock = new Timer();
+	private static Timer simClock;
 	
 	Airplane() {
+		simClock = new Timer();
+		simClock.schedule(this, 0, 2000);
 		setEmergency(false);
 		milesFromAirport = 5;
-		simClock.schedule(this, 0, 2000);
+		hasArrived = false;
 	}
 	
 	
@@ -27,8 +29,9 @@ public class Airplane extends TimerTask {
 	public void run() {
 		if( (milesFromAirport > 0) && !isEmergency ) {
 			milesFromAirport--;;
-		} else {
+		} else if( milesFromAirport == 0 ) {
 			setHasArrived(true);
+			cancel();
 		}
 		
 	}

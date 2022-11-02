@@ -15,11 +15,12 @@ public class Runway extends TimerTask {
 	private int numPlanesProcessed = 0;
 	private int numWaiting = 0;
 	
-	private static Timer simClock = new Timer();
+	private static Timer simClock;
 	
 	Runway(int runwayId) {
+		simClock = new Timer();
 		simClock.schedule(this, 0, 10000);
-		this.setRunwayId(runwayId);
+		this.runwayId = runwayId;
 	}
 	
 	@Override
