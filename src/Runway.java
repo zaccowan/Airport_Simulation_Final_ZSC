@@ -1,31 +1,22 @@
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
- * Runway class for storing planes and simulating processing time.
+ * Runway class for storing planes and managing landing of planes.
  * @author Zachary Cowan
  * @version 11/1/22
  * Fall/2022
  */
-public class Runway extends TimerTask {
+public class Runway {
 
 	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
 	private Airplane previousLanded;
 	private int runwayId;
 	private int numPlanesProcessed = 0;
 	private int numWaiting = 0;
-	
-	private static Timer simClock;
+	private int timeOfFirstPlane = 0;
+	private int LANDING_TIME_SEC = 10;
 	
 	Runway(int runwayId) {
-		simClock = new Timer();
-		simClock.schedule(this, 0, 10000);
 		this.runwayId = runwayId;
-	}
-	
-	@Override
-	public void run() {
-		planeProcessed();
 	}
 	
 	public void sendToRunway(Airplane plane) {
@@ -43,12 +34,11 @@ public class Runway extends TimerTask {
 		readyToLand.printQueue("Runway " + runwayId + " queue:");
 	}
 	
-	public void planeProcessed() {
-		if( !readyToLand.isEmpty() ) {
-			numWaiting -= 1;
-			numPlanesProcessed++;
-			previousLanded = readyToLand.dequeue().getData();
-		}
+	public Airplane planeProcessed() {
+		numWaiting -= 1;
+		numPlanesProcessed++;
+		previousLanded = readyToLand.dequeue().getData();
+		return previousLanded;
 	}
 	public boolean isEmpty() {
 		return readyToLand.isEmpty();
@@ -74,6 +64,17 @@ public class Runway extends TimerTask {
 	}
 	public int getNumWaiting() {
 		return numWaiting;
+	}
+	public Airplane getTop() {
+		return readyToLand.getFrontData();
+	}
+
+	public int getTimeOfFirstPlane() {
+		return timeOfFirstPlane;
+	}
+
+	public void setTimeOfFirstPlane(int timeOfFirstPlane) {
+		this.timeOfFirstPlane = timeOfFirstPlane;
 	}
 
 	
