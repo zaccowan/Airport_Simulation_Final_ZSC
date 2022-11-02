@@ -66,7 +66,7 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 		if(isEmpty()) {
 			throw new EmptyQueueException();
 		}
-		return queueStorage.head;
+		return queueStorage.getHead();
 	}
 	
 	/**
@@ -74,7 +74,15 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 	 * @return Node The node at the end of the queue.
 	 */
 	public Node<T> getBack() {
-		return queueStorage.tail;
+		return queueStorage.getTail();
+	}
+	
+	/**
+	 * Get the data stored in the top most node.
+	 * @return T Data stored in top queue node.
+	 */
+	public T getFrontData() {
+		return queueStorage.getHead().getData();
 	}
 
 	/**
@@ -83,7 +91,7 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 	 */
 	public boolean isEmpty() {
 		boolean isEmpty = false;
-		if( queueStorage.head == null ) {
+		if( queueStorage.getHead() == null ) {
 			isEmpty = true;
 		}
 		return isEmpty;
@@ -93,10 +101,10 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 	 * Remove all items from the queue.
 	 */
 	public void clear() {
-		queueStorage.head.nextNode = null;
-		queueStorage.head = null;
-		queueStorage.tail = null;
-		queueStorage.length = 0;
+		queueStorage.getHead().setNextNode(null);
+		queueStorage.setHead(null);
+		queueStorage.setTail(null);
+		queueStorage.setLength(0);
 	}
 
 	/**
@@ -104,14 +112,14 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 	 * @return int Number of items.
 	 */
 	public int getNumInQueue() {
-		return queueStorage.length;
+		return queueStorage.getLength();
 	}
 	
 	/**
 	 * Print Items in queue with default formating.
 	 */
 	public void printQueue() {
-		Node<T> currentNode = queueStorage.head;
+		Node<T> currentNode = queueStorage.getHead();
 		System.out.print("In Queue:\n");
 		while (currentNode != null) {
 			if( currentNode.getData() != null) {
@@ -126,7 +134,7 @@ public class PriorityQueue<T> implements QueueInterface<T> {
 	 * @param message Message to present when printing.
 	 */
 	public void printQueue(String message) {
-		Node<T> currentNode = queueStorage.head;
+		Node<T> currentNode = queueStorage.getHead();
 		System.out.print( message + "\n");
 		while (currentNode != null) {
 			if( currentNode.getData() != null) {

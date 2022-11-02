@@ -15,7 +15,7 @@ public class Runway extends TimerTask {
 	private int numPlanesProcessed = 0;
 	private int numWaiting = 0;
 	
-	static Timer simClock = new Timer();
+	private static Timer simClock = new Timer();
 	
 	Runway(int runwayId) {
 		simClock.schedule(this, 0, 10000);
@@ -24,12 +24,11 @@ public class Runway extends TimerTask {
 	
 	@Override
 	public void run() {
-		if( !readyToLand.isEmpty() ) {
+		if( !readyToLand.isEmpty() && readyToLand.getFrontData().hasArrived() ) {
 			numWaiting -= 1;
 			numPlanesProcessed += 1;
 			previousLanded = readyToLand.dequeue().getData();
 		}
-		
 	}
 	
 	public void sendToRunway(Airplane plane) {

@@ -6,9 +6,9 @@
  */
 public class LinkedList<T> {
 	
-	Node<T> head;
-	int length;
-	Node<T> tail;
+	private Node<T> head;
+	private Node<T> tail;
+	private int length;
 	
 	public LinkedList()
 	{
@@ -53,12 +53,12 @@ public class LinkedList<T> {
 	{
 		if (isEmpty() ) {
 			head = aNode;
-			tail=head;
+			tail = head;
 			return;
 		}
-		tail.nextNode = aNode;
-		tail=tail.nextNode;
-		tail.nextNode = null;
+		tail.setNextNode(aNode);
+		tail= tail.getNextNode();
+		tail.setNextNode(null);
 		length++;
 	}
 	
@@ -72,9 +72,28 @@ public class LinkedList<T> {
 			throw new EmptyQueueException();
 		}
 		Node<T> dequeuedEntry = head;
-		head = head.nextNode;
+		head = head.getNextNode();
 		length--;
 		return dequeuedEntry;
+	}
+	
+	public Node<T> getHead() {
+		return head;
+	}
+	public void setHead(Node<T> newHead) {
+		head = newHead;
+	}
+	public Node<T> getTail() {
+		return head;
+	}
+	public void setTail(Node<T> newTail) {
+		tail = newTail;
+	}
+	public int getLength() {
+		return length;
+	}
+	public void setLength(int newLength) {
+		length = newLength;
 	}
 	
 }

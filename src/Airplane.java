@@ -14,7 +14,7 @@ public class Airplane extends TimerTask {
 	private boolean isEmergency;
 	private boolean hasArrived = false;
 	
-	static Timer simClock = new Timer();
+	private static Timer simClock = new Timer();
 	
 	Airplane() {
 		setEmergency(false);
@@ -25,7 +25,7 @@ public class Airplane extends TimerTask {
 	
 	@Override
 	public void run() {
-		if( milesFromAirport > 0 ) {
+		if( (milesFromAirport > 0) && !isEmergency ) {
 			milesFromAirport--;;
 		} else {
 			setHasArrived(true);
@@ -50,7 +50,7 @@ public class Airplane extends TimerTask {
 		planeId = num;
 	}
 
-	public int  getDistance() {
+	public int getDistance() {
 		return milesFromAirport;
 	}
 

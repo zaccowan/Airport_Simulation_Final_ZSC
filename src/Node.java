@@ -6,8 +6,9 @@
  * @version 9/1/2022
  */
 class Node<T> {
-    T data;
-	Node<T> nextNode;
+    private T data;
+	private Node<T> nextNode;
+	
 	public Node()
 	{
 		nextNode=null;

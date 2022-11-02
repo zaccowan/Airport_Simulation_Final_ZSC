@@ -54,10 +54,10 @@ public class Queue<T> implements QueueInterface<T> {
 	 * @throws EmptyQueueException When queue is already empty.
 	 */
 	public Node<T> getFront() {
-		if(isEmpty()) {
+		if( isEmpty() ) {
 			throw new EmptyQueueException();
 		}
-		return queueStorage.head;
+		return queueStorage.getHead();
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class Queue<T> implements QueueInterface<T> {
 	 * @return Node The node at the end of the queue.
 	 */
 	public Node<T> getBack() {
-		return queueStorage.tail;
+		return queueStorage.getTail();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Queue<T> implements QueueInterface<T> {
 	 */
 	public boolean isEmpty() {
 		boolean isEmpty = false;
-		if( queueStorage.head == null ) {
+		if( queueStorage.getHead() == null ) {
 			isEmpty = true;
 		}
 		return isEmpty;
@@ -84,10 +84,10 @@ public class Queue<T> implements QueueInterface<T> {
 	 * Remove all items from the queue.
 	 */
 	public void clear() {
-		queueStorage.head.setNextNode(null);
-		queueStorage.head = null;
-		queueStorage.tail = null;
-		queueStorage.length = 0;
+		queueStorage.getHead().setNextNode(null);
+		queueStorage.setHead(null);
+		queueStorage.setTail(null);
+		queueStorage.setLength(0);
 	}
 
 	/**
@@ -95,14 +95,14 @@ public class Queue<T> implements QueueInterface<T> {
 	 * @return int Number of items.
 	 */
 	public int getNumInQueue() {
-		return queueStorage.length;
+		return queueStorage.getLength();
 	}
 	
 	/**
 	 * Print Items in queue with default formating.
 	 */
 	public void printQueue() {
-		Node<T> currentNode = queueStorage.head;
+		Node<T> currentNode = queueStorage.getHead();
 		System.out.print("In Queue:\n");
 		while (currentNode != null) {
 			System.out.print("\t" + currentNode.getData() + "\n");
@@ -115,7 +115,7 @@ public class Queue<T> implements QueueInterface<T> {
 	 * @param message Message to present when printing.
 	 */
 	public void printQueue(String message) {
-		Node<T> currentNode = queueStorage.head;
+		Node<T> currentNode = queueStorage.getHead();
 		System.out.print( message + "\n");
 		while (currentNode != null) {
 			System.out.print("\t" + currentNode.getData() + "\n");

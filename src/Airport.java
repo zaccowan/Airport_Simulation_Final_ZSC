@@ -17,6 +17,7 @@ public class Airport extends TimerTask {
 	 * Default uses 3 runways.
 	 */
 	Airport() {
+		
 		planeApproaching = new PriorityQueue<Airplane>();
 		runwayStorage = new Runway[3];
 		runwayStorage[0] = new Runway(1);
@@ -32,6 +33,7 @@ public class Airport extends TimerTask {
 	 * @param maxSpawnDistance Max distance to spawn planes.
 	 */
 	Airport(int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance) {
+		simClock = new Timer();
 		setMaxPlanes(maxPlanes);
 		setSpawnRate(spawnRate);
 		setEmergencyRate(emergencyRate);
@@ -47,6 +49,7 @@ public class Airport extends TimerTask {
 	 * @param numberOfRunways Number of runways to create.
 	 */
 	Airport(int numberOfRunways) {
+		simClock = new Timer();
 		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
 			runwayStorage = new Runway[numberOfRunways];
 			planeApproaching = new PriorityQueue<Airplane>();
@@ -64,7 +67,7 @@ public class Airport extends TimerTask {
 	private Airplane newPlane;
 	
 	private int indexOfLastRunway = 0;
-	private boolean runwaysEmpty = false;
+	private int runwaysEmpty = 0;
 	
 	//
 	//
@@ -80,7 +83,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Timer used to run airport simulation.
 	 */
-	static Timer simClock = new Timer();
+	static Timer simClock;
 	/**
 	 * Plane number
 	 * Used to count planes spawned and as plane id in Airplane class.
@@ -108,7 +111,6 @@ public class Airport extends TimerTask {
 			newPlane.setDistance(distance);
 			planeNum++;
 			
-			
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < EMERGENCY_RATE ) {
 				newPlane.setEmergency(true);
@@ -118,23 +120,19 @@ public class Airport extends TimerTask {
 				planeApproaching.enqueue(newPlane);
 				addToLeastBusyRunway();
 			}
-			
 		}
-		//Printing Queues.
+		
+		//Printing Queues
 		planeApproaching.printQueue("Approaching:");
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
-			if( runway.isEmpty() && (planeNum == MAX_PLANES) ) {
-				runwaysEmpty = true;
-			} else {
-				runwaysEmpty = false;
-			}
 		}
+				
 		
-		if( runwaysEmpty) {
-			System.out.println("All " + planeNum + " planes processed in " + simTime + " seconds.\n\tAirport used " + runwayStorage.length + " runways.");
-			cancel();
-		}
+//		if( (planeNum == MAX_PLANES) ) {
+//			System.out.println("All " + planeNum + " planes processed in " + simTime + " seconds.\n\tAirport used " + runwayStorage.length + " runways.");
+//			cancel();
+//		}
 		
 		if( planeNum == MAX_PLANES ) {
 			addToLeastBusyRunway();
