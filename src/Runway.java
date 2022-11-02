@@ -1,6 +1,12 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Runway class for storing planes and simulating processing time.
+ * @author Zachary Cowan
+ * @version 11/1/22
+ * Fall/2022
+ */
 public class Runway extends TimerTask {
 
 	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
@@ -18,7 +24,7 @@ public class Runway extends TimerTask {
 	
 	@Override
 	public void run() {
-		if( !readyToLand.isEmpty()) {
+		if( !readyToLand.isEmpty() ) {
 			numWaiting -= 1;
 			numPlanesProcessed += 1;
 			previousLanded = readyToLand.dequeue().getData();

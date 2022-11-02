@@ -1,11 +1,18 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Airplane class for storing plane data and simulating distance.
+ * @author Zachary Cowan
+ * @version 11/1/22
+ * Fall/2022
+ */
 public class Airplane extends TimerTask {
 
 	private int planeId;
 	private int milesFromAirport;
 	private boolean isEmergency;
+	private boolean hasArrived = false;
 	
 	static Timer simClock = new Timer();
 	
@@ -20,6 +27,8 @@ public class Airplane extends TimerTask {
 	public void run() {
 		if( milesFromAirport > 0 ) {
 			milesFromAirport--;;
+		} else {
+			setHasArrived(true);
 		}
 		
 	}
@@ -29,14 +38,13 @@ public class Airplane extends TimerTask {
 	}
 	
 	public String toString() {
-		if( (getDistance() == 0) && (!isEmergency) ) {
-			return "plane " + String.valueOf(getPlaneId());
-		} 
-		if( isEmergency ) {
-			return "plane " + String.valueOf(getPlaneId()) + " emergency landing";
+		String message = "plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
+		if( hasArrived ) {
+			message = "plane " + String.valueOf(getPlaneId()) + " is at airport.";
+		} else if( isEmergency ) {
+			message = "plane " + String.valueOf(getPlaneId()) + " emergency landing";
 		}
-		
-		return "plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
+		return message;
 	}
 	public void setPlaneId(int num) {
 		planeId = num;
@@ -58,6 +66,16 @@ public class Airplane extends TimerTask {
 
 	public void setEmergency(boolean isEmergency) {
 		this.isEmergency = isEmergency;
+	}
+
+
+	public boolean hasArrived() {
+		return hasArrived;
+	}
+
+
+	private void setHasArrived(boolean hasArrived) {
+		this.hasArrived = hasArrived;
 	}
 
 	
