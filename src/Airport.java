@@ -47,7 +47,7 @@ public class Airport extends TimerTask {
 	 * @param numberOfRunways Number of runways to create.
 	 */
 	Airport(int numberOfRunways) {
-		if( numberOfRunways <= 10) {
+		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
 			runwayStorage = new Runway[numberOfRunways];
 			planeApproaching = new PriorityQueue<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
@@ -62,6 +62,9 @@ public class Airport extends TimerTask {
 	private PriorityQueue<Airplane> planeApproaching = new PriorityQueue<Airplane>();
 	private Runway[] runwayStorage;
 	private Airplane newPlane;
+	
+	private int indexOfLastRunway = 0;
+	private boolean runwaysEmpty = false;
 	
 	//
 	//
@@ -115,23 +118,28 @@ public class Airport extends TimerTask {
 				planeApproaching.enqueue(newPlane);
 				addToLeastBusyRunway();
 			}
+			
+		}
+		//Printing Queues.
+		planeApproaching.printQueue("Approaching:");
+		for( Runway runway : runwayStorage) {
+			runway.printWaitingQueue();
+			if( runway.isEmpty() && (planeNum == MAX_PLANES) ) {
+				runwaysEmpty = true;
+			} else {
+				runwaysEmpty = false;
+			}
+		}
+		
+		if( runwaysEmpty) {
+			System.out.println("All " + planeNum + " planes processed in " + simTime + " seconds.\n\tAirport used " + runwayStorage.length + " runways.");
+			cancel();
 		}
 		
 		if( planeNum == MAX_PLANES ) {
 			addToLeastBusyRunway();
 		}
 		
-		//Printing Runway Queues
-		for( Runway runway : runwayStorage ) {
-			if( !runway.isEmpty() ) {
-				planeApproaching.printQueue("Approaching:");
-				runway.printWaitingQueue();
-			}
-			else {
-				System.out.println("All " + (planeNum-1) + " planes processed in " + simTime + " seconds.");
-				cancel();
-			}
-		}
 		
 		
 		//Tick is every 1000 milliseconds
@@ -227,9 +235,14 @@ public class Airport extends TimerTask {
 	 * Conditional Logic to send plane in approaching queue to the least busy runway.
 	 */
 	private void addToLeastBusyRunway() {
-		for( int index = 0 ; index < runwayStorage.length ; index++ ) {
-			if( runwayStorage[index].getNumWaiting() > runwayStorage[index+1].getNumWaiting() ) {
-				runwayStorage[index+1].sendToRunway(planeApproaching.getFront().getData());
+		if( !planeApproaching.isEmpty() ) {
+			if( indexOfLastRunway < (runwayStorage.length) ) {
+				runwayStorage[indexOfLastRunway].sendToRunway(planeApproaching.dequeue().getData());
+				indexOfLastRunway++;
+			} else {
+				indexOfLastRunway = 0;
+				runwayStorage[indexOfLastRunway].sendToRunway(planeApproaching.dequeue().getData());
+				indexOfLastRunway++;
 			}
 		}
 	}
