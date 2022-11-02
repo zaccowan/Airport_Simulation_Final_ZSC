@@ -118,13 +118,25 @@ public class Airport extends TimerTask {
 				addToLeastBusyRunway();
 			} else {
 				planesApproaching.enqueue(newPlane);
-				addToLeastBusyRunway();
+//				addToLeastBusyRunway();
 			}
 		}
 		
+		if( !planesApproaching.isEmpty() ) {
+			Airplane topPlane = planesApproaching.dequeue().getData();
+			System.out.println(topPlane.getDistance());
+			if(topPlane.getDistance() == 0 ) {
+				addToLeastBusyRunway(topPlane);
+			}
+			else {
+				planesApproaching.enqueueFront(topPlane);
+			}
+		}
+		
+		
+		 
 		//Printing Queues
 		planesApproaching.printQueue("Approaching:");
-		System.out.println(totalProcessed);
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
 		}
@@ -244,6 +256,18 @@ public class Airport extends TimerTask {
 			} else {
 				indexOfLastRunway = 0;
 				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.dequeue().getData());
+				indexOfLastRunway++;
+			}
+		}
+	}
+	private void addToLeastBusyRunway(Airplane plane) {
+		if( !planesApproaching.isEmpty() ) {
+			if( indexOfLastRunway < (runwayStorage.length) ) {
+				runwayStorage[indexOfLastRunway].sendToRunway(plane);
+				indexOfLastRunway++;
+			} else {
+				indexOfLastRunway = 0;
+				runwayStorage[indexOfLastRunway].sendToRunway(plane);
 				indexOfLastRunway++;
 			}
 		}

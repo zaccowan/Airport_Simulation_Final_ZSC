@@ -25,14 +25,11 @@ public class Runway extends TimerTask {
 	
 	@Override
 	public void run() {
-		if( !readyToLand.isEmpty() && readyToLand.getFrontData().hasArrived() ) {
-			numWaiting -= 1;
-			numPlanesProcessed += 1;
-			previousLanded = readyToLand.dequeue().getData();
-		}
+		planeProcessed();
 	}
 	
 	public void sendToRunway(Airplane plane) {
+		
 		numWaiting += 1;
 		readyToLand.enqueue(plane);
 	}
