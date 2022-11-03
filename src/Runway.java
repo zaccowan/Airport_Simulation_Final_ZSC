@@ -6,44 +6,104 @@
  * Fall/2022
  */
 public class Runway {
-
-	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
-	private Airplane previousLanded;
-	private int runwayId;
-	private int numPlanesProcessed = 0;
-	private int timeOfFirstPlane = 0;
-	private int LANDING_TIME_SEC = 10;
-	private boolean timeHasBeenSet = false;
+	
+	//
+	//
+	//Constructors
 	
 	Runway(int runwayId) {
 		this.runwayId = runwayId;
 	}
-	
-	public void sendToRunway(Airplane plane) {
 
+	
+	
+	
+	//
+	//
+	//Runway data
+	
+	/**
+	 * Stores planes to process whenever a plane is sent to the runway.
+	 */
+	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
+	/**
+	 * Stores the most recently processed plane.
+	 */
+	private Airplane previousLanded;
+	/**
+	 * Identification number for a Runway object
+	 */
+	private int runwayId;
+	
+	/**
+	 * Stores the number of planes processed by a runway.
+	 */
+	private int numPlanesProcessed = 0;
+	/**
+	 * Stores the time in seconds at which a Runway object first recieved its first plane.
+	 */
+	private int timeOfFirstPlane = 0;
+	
+	/**
+	 * Time needed to process a plane at runway.
+	 */
+	private int LANDING_TIME_SEC = 10;
+	/**
+	 * Flag to prevent overriding of timeOfFirstPlane
+	 */
+	private boolean timeHasBeenSet = false;
+	
+	
+	
+	
+	//
+	//
+	//Runway Specific Methods
+	
+	/**
+	 * Recieves an airplane and adds it to end of wait list.
+	 * @param plane Plane to put in runway processing queue
+	 */
+	public void sendToRunway(Airplane plane) {
 		readyToLand.enqueue(plane);
 	}
+	/**
+	 * Recieves an airplane and adds it to front of wait list.
+	 * @param plane Plane to put in runway processing queue
+	 */
 	public void prioritySendToRunway(Airplane plane) {
 		readyToLand.enqueueFront(plane);
 	}
-	
-	
+	/**
+	 * Prints the runway id and all Airplanes waiting in queue
+	 */
 	public void printWaitingQueue() {
 		readyToLand.printQueue("Runway " + runwayId + " queue:");
 	}
-	
+	/**
+	 * Processes a plane and dequeues it from the wait list
+	 * @return Airplane plane at top of list.
+	 */
 	public Airplane planeProcessed() {
 		numPlanesProcessed++;
 		previousLanded = readyToLand.dequeue().getData();
 		return previousLanded;
 	}
+	/**
+	 * See if runway has any planes to process.
+	 * @return True if no planes are waiting in runway
+	 */
 	public boolean isEmpty() {
 		return readyToLand.isEmpty();
 	}
 
+	
+	
+	
 	//
 	//
 	//Getters and Setters
+	
 	public Airplane getPreviousLanded() {
 		return previousLanded;
 	}

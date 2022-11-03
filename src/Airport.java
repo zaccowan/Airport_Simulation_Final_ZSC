@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,8 +9,6 @@ import java.util.TimerTask;
  * Fall/2022
  */
 public class Airport extends TimerTask {
-
-	
 	//
 	//
 	//Constructors
@@ -54,10 +51,6 @@ public class Airport extends TimerTask {
 		setSpawnRate(spawnRate);
 		setEmergencyRate(emergencyRate);
 		planesApproaching = new PriorityQueue<Airplane>();
-		runwayStorage = new Runway[3];
-		runwayStorage[0] = new Runway(1);
-		runwayStorage[1] = new Runway(2);
-		runwayStorage[2] = new Runway(3);
 	}
 	/**
 	 * Initialize airport with custom number of runways.
@@ -82,10 +75,30 @@ public class Airport extends TimerTask {
 	//
 	//Plane management
 	
+	/**
+	 * Queue to store newly spawned airplanes on approach to airport.
+	 */
 	private PriorityQueue<Airplane> planesApproaching = new PriorityQueue<Airplane>();
+	/**
+	 * Stores runways for airport
+	 * Allows for a variable number of runways to be instantiated upon creation of an aiport object.
+	 */
 	private Runway[] runwayStorage;
+	/**
+	 * New plane spawned within the simulation
+	 */
 	private Airplane newPlane;
+	
+	/**
+	 * Stores the index of the last runway that recieved a plane.
+	 * Index coresponds to a Runway object within runwayStorage
+	 */
 	private int indexOfLastRunway = 0;
+	
+	/**
+	 * Keeps track of number of runways empty during simulation.
+	 * Used to terminate simulation once all planes have been processed.
+	 */
 	private int runwaysEmpty;
 	
 	
@@ -95,12 +108,28 @@ public class Airport extends TimerTask {
 	//
 	//Simulation Settings
 	
+	/**
+	 * Max number of planes to spawn during simulation.
+	 */
 	private int MAX_PLANES = 10;
+	/**
+	 * Rate at which to spawn planes in simulation.
+	 */
 	private double SPAWN_RATE = 0.7;
+	
+	/**
+	 * Rate at which to spawn emergency planes in simulation.
+	 */
 	private double EMERGENCY_RATE = 0.1;
+	/**
+	 * Max distance to spawn a plane from airport.
+	 */
 	private int MAX_DISTANCE = 10;
 	
-	
+	/**
+	 * Keeps track of the number of emergency planes during the simulation.
+	 */
+	private int numEmergencyPlanesSpawned = 0;
 	
 	
 	//
@@ -165,6 +194,7 @@ public class Airport extends TimerTask {
 			
 			//If Emergency Plane prioritize approach
 			if( spawnSeed < EMERGENCY_RATE ) {
+				numEmergencyPlanesSpawned++;
 				newPlane.setEmergency(true);
 				planesApproaching.enqueueFront(newPlane);
 			} 
@@ -206,7 +236,15 @@ public class Airport extends TimerTask {
 		//Ends the simulation when all planes processed
 		if( (runwaysEmpty == runwayStorage.length) && planesApproaching.isEmpty() ) {
 			clear();
-			System.out.println("Finished!\n\nProcessed " + MAX_PLANES + " planes in " + simTime  + " seconds.");
+			System.out.println("Finished simulation!"
+					+ "\n\n"
+					+ "Processed " + MAX_PLANES + " planes in " + simTime  + " seconds.\n");
+			System.out.println("Simulation settings and fun data:\n"
+					+ "\tMax Planes: " + getMaxPlanes() + "\n"
+					+ "\tSpawn Rate: " + getSpawnRate() + "\n"
+					+ "\tEmergency Rate: " + getEmergencyRate() + "\n"
+					+ "\tMax Spawn Distance: " + getMaxDistance() + "\n"
+					+ "\tNumber of Emergencies: " + getnumEmergencyPlanesSpawned() + "\n");
 			cancel();
 		}
 		
@@ -261,7 +299,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Get simulation settings for plane spawn rate.
 	 * Values range from 0 to 1.
-	 * Value of 1 spans a plane every iteration.
+	 * Value of 1 spawns a plane every iteration.
 	 * @return double P
 	 */
 	public double getSpawnRate() {
@@ -270,7 +308,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Set simulation settings for plane spawn rate.
 	 * Values range from 0 to 1.
-	 * Value of 1 spans a plane every iteration.
+	 * Value of 1 spawns a plane every iteration.
 	 * @param spawnRate Rate at which to spawn planes.
 	 */
 	public void setSpawnRate(double spawnRate) {
@@ -281,7 +319,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Get simulation settings for spawn rate of emergency plane.
 	 * Values range from 0 to 1.
-	 * Value of 1 spans an emergency plane every iteration.
+	 * Value of 1 spawns an emergency plane every iteration.
 	 * @return double P
 	 */
 	public double getEmergencyRate() {
@@ -297,12 +335,33 @@ public class Airport extends TimerTask {
 		this.EMERGENCY_RATE = emergencyRate;
 	}
 	/**
+	 * Get simulation settings for max distance to spawn plane from airport.
+	 * Values range from 0 to 10.
+	 * @return double P
+	 */
+	public double getMaxDistance() {
+		return MAX_DISTANCE;
+	}
+	/**
 	 * Set simulation settings for max distance to spawn plane from airport.
 	 * Distance in miles.
 	 * @param maxDistance Max distance to spawn plane.
 	 */
 	public void setMaxSpawnDistance(int maxDistance) {
 		this.MAX_DISTANCE = maxDistance;
+	}
+	public int getRunwaysEmpty() {
+		return runwaysEmpty;
+	}
+	public void setRunwaysEmpty(int runwaysEmpty) {
+		this.runwaysEmpty = runwaysEmpty;
+	}
+	/**
+	 * Get the number of emergency planes spawned in the simulation.
+	 * @return the numEmergencyPlanesSpawned
+	 */
+	public int getnumEmergencyPlanesSpawned() {
+		return numEmergencyPlanesSpawned;
 	}
 	
 	
@@ -321,10 +380,5 @@ public class Airport extends TimerTask {
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
     }
-	public int getRunwaysEmpty() {
-		return runwaysEmpty;
-	}
-	public void setRunwaysEmpty(int runwaysEmpty) {
-		this.runwaysEmpty = runwaysEmpty;
-	}
+	
 }
