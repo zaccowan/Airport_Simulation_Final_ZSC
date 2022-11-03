@@ -27,13 +27,21 @@ public class Airport extends TimerTask {
 	}
 	/**
 	 * Initialize Default Airport with custom simulation values.
+	 * @param numberOfRunways Number of runways to create.
 	 * @param maxPlanes Max planes to spawn in simulation.
 	 * @param spawnRate Rate of spawning planes.
 	 * @param emergencyRate Rate of making emergency planes.
 	 * @param maxSpawnDistance Max distance to spawn planes.
 	 */
-	Airport(int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance) {
+	Airport(int numberOfRunways, int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance) {
 		simClock = new Timer();
+		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
+			runwayStorage = new Runway[numberOfRunways];
+			planesApproaching = new PriorityQueue<Airplane>();
+			for( int index = 0 ; index < numberOfRunways ; index++ ) {
+				runwayStorage[index] = new Runway(index+1);
+			}
+		}
 		setMaxPlanes(maxPlanes);
 		setSpawnRate(spawnRate);
 		setEmergencyRate(emergencyRate);
@@ -142,11 +150,15 @@ public class Airport extends TimerTask {
 			if( spawnSeed < EMERGENCY_RATE ) {
 				newPlane.setEmergency(true);
 				planesApproaching.enqueueFront(newPlane);
-			} else {
+			} 
+			//Not emergency add to approach queue as normal
+			else {
 				planesApproaching.enqueue(newPlane);
 			}
+			//Send a plane to a runway
 			addToLeastBusyRunway();
 		}
+		//Send last plane to a runway
 		if( planeNum == MAX_PLANES ) {
 			addToLeastBusyRunway();
 		}
