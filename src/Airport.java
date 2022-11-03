@@ -65,9 +65,8 @@ public class Airport extends TimerTask {
 	private PriorityQueue<Airplane> planesApproaching = new PriorityQueue<Airplane>();
 	private Runway[] runwayStorage;
 	private Airplane newPlane;
-	
 	private int indexOfLastRunway = 0;
-	int totalProcessed = 0;
+	private int runwaysEmpty;
 	
 	//
 	//
@@ -76,7 +75,6 @@ public class Airport extends TimerTask {
 	private double SPAWN_RATE = 0.7;
 	private double EMERGENCY_RATE = 0.1;
 	private int MAX_DISTANCE = 10;
-	private int SEC_TO_LAND_PLANE = 10;
 	
 	//
 	//
@@ -144,35 +142,47 @@ public class Airport extends TimerTask {
 			if( spawnSeed < EMERGENCY_RATE ) {
 				newPlane.setEmergency(true);
 				planesApproaching.enqueueFront(newPlane);
-				addToLeastBusyRunway();
 			} else {
 				planesApproaching.enqueue(newPlane);
-				addToLeastBusyRunway();
 			}
+			addToLeastBusyRunway();
+		}
+		if( planeNum == MAX_PLANES ) {
+			addToLeastBusyRunway();
 		}
 		
+		
 		//Processing plane on runway
-		if( ((simTime % SEC_TO_LAND_PLANE) == 0) && (simTime > 0) ) {
-			for( Runway runway : runwayStorage) {
-				if( !runway.isEmpty() ) {
-					System.out.println();
+		setRunwaysEmpty(0);
+		for( Runway runway : runwayStorage) {
+			if( !runway.isEmpty() ) {
+				if( (simTime > 0) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
 					runway.planeProcessed();
 				}
 			}
+			if( runway.isEmpty() && (simTime > 5)) {
+				setRunwaysEmpty(getRunwaysEmpty() + 1);
+			}
+			
 		}
 		
 		
-		//Printing Queues
+		//Printing Simulation
+		System.out.println("empty " + runwaysEmpty);
+		System.out.println("Simulation time (seconds):\t" + simTime + "\n\n");
 		planesApproaching.printQueue("Approaching:");
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
 		}
 		
-		if( planeNum == MAX_PLANES ) {
-			addToLeastBusyRunway();
+		
+		//Ends the simulation when all planes processed
+		if( runwaysEmpty == runwayStorage.length ) {
+			clear();
+			System.out.println("Finished!\n\nProcessed " + MAX_PLANES + " in " +simTime  + " seconds.");
+			cancel();
 		}
 		
-
 		//Increments every second.
 		simTime++;
 	}
@@ -184,7 +194,10 @@ public class Airport extends TimerTask {
 		if( !planesApproaching.isEmpty() ) {
 			if( indexOfLastRunway < (runwayStorage.length) ) {
 				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.dequeue().getData());
-				runwayStorage[indexOfLastRunway]
+				if( !runwayStorage[indexOfLastRunway].getTimeHasBeenSet() ) {
+					runwayStorage[indexOfLastRunway].setTimeOfFirstPlane(simTime);
+					runwayStorage[indexOfLastRunway].setTimeHasBeenSet(true);
+				}
 				indexOfLastRunway++;
 			} else {
 				indexOfLastRunway = 0;
@@ -272,4 +285,10 @@ public class Airport extends TimerTask {
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
     }
+	public int getRunwaysEmpty() {
+		return runwaysEmpty;
+	}
+	public void setRunwaysEmpty(int runwaysEmpty) {
+		this.runwaysEmpty = runwaysEmpty;
+	}
 }

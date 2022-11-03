@@ -14,13 +14,13 @@ public class Runway {
 	private int numWaiting = 0;
 	private int timeOfFirstPlane = 0;
 	private int LANDING_TIME_SEC = 10;
+	private boolean timeHasBeenSet = false;
 	
 	Runway(int runwayId) {
 		this.runwayId = runwayId;
 	}
 	
 	public void sendToRunway(Airplane plane) {
-		
 		numWaiting += 1;
 		readyToLand.enqueue(plane);
 	}
@@ -75,6 +75,22 @@ public class Runway {
 
 	public void setTimeOfFirstPlane(int timeOfFirstPlane) {
 		this.timeOfFirstPlane = timeOfFirstPlane;
+	}
+
+	public int getLANDING_TIME_SEC() {
+		return LANDING_TIME_SEC;
+	}
+
+	public void setLANDING_TIME_SEC(int lANDING_TIME_SEC) {
+		LANDING_TIME_SEC = lANDING_TIME_SEC;
+	}
+
+	public boolean getTimeHasBeenSet() {
+		return timeHasBeenSet;
+	}
+
+	public void setTimeHasBeenSet(boolean timeHasBeenSet) {
+		this.timeHasBeenSet = timeHasBeenSet;
 	}
 
 	
