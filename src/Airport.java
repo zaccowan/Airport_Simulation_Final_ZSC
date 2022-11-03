@@ -11,6 +11,11 @@ import java.util.TimerTask;
  */
 public class Airport extends TimerTask {
 
+	
+	//
+	//
+	//Constructors
+	
 	/**
 	 * Default Constructor for airport.
 	 * Resets all processes to default.
@@ -27,6 +32,9 @@ public class Airport extends TimerTask {
 	}
 	/**
 	 * Initialize Default Airport with custom simulation values.
+	 * Max number of runways is 10.
+	 * Rates are between 1 and 0.
+	 * Max distance is 10.
 	 * @param numberOfRunways Number of runways to create.
 	 * @param maxPlanes Max planes to spawn in simulation.
 	 * @param spawnRate Rate of spawning planes.
@@ -67,22 +75,33 @@ public class Airport extends TimerTask {
 		}
 	}
 	
+	
+	
+	
 	//
 	//
-	//Queues for managing planes
+	//Plane management
+	
 	private PriorityQueue<Airplane> planesApproaching = new PriorityQueue<Airplane>();
 	private Runway[] runwayStorage;
 	private Airplane newPlane;
 	private int indexOfLastRunway = 0;
 	private int runwaysEmpty;
 	
+	
+	
+	
 	//
 	//
-	//Settings for simulation
+	//Simulation Settings
+	
 	private int MAX_PLANES = 10;
 	private double SPAWN_RATE = 0.7;
 	private double EMERGENCY_RATE = 0.1;
 	private int MAX_DISTANCE = 10;
+	
+	
+	
 	
 	//
 	//
@@ -101,32 +120,29 @@ public class Airport extends TimerTask {
 	 */
 	public static int simTime = 0;
 	
+	
+	
+	
 	//
-	// Simulation Wrappers
+	// Simulation Wrapper for running
 	
 	/**
 	 * Method to start the simulation.
+	 * Starts game clock that calls run().
 	 */
 	public void runSimulation() {
 		simClock.schedule(this, 0, 1000);
 	}
 	
 	
-	/**
-	 * Method to start the simulation.
-	 * @param spawnRate Value to set for spawn rate of planes in simulation.
-	 * @param emergencyRate Value to set for emergency rate of simulation.
-	 */
-	public void runSimulation(double spawnRate, double emergencyRate) {
-		setSpawnRate(spawnRate);
-		setEmergencyRate(emergencyRate);
-		simClock.schedule(this, 0, 1000);
-	}
 	
 	
 	//
 	//
 	//Main Simulation Method
+	//
+	//
+	
 	/**
 	 * Recursive method called based on time set in simClock.
 	 * Default is 1000ms, aka every second.
@@ -140,6 +156,7 @@ public class Airport extends TimerTask {
 		double spawnSeed = Math.random();
 		int distance = (int) ((Math.random() * MAX_DISTANCE) +1);
 		if( (spawnSeed < SPAWN_RATE) && (planeNum <= MAX_PLANES) ) {
+			
 			//Newly spawned plane info
 			newPlane = new Airplane();
 			newPlane.setPlaneId(planeNum);
@@ -151,18 +168,20 @@ public class Airport extends TimerTask {
 				newPlane.setEmergency(true);
 				planesApproaching.enqueueFront(newPlane);
 			} 
+			
 			//Not emergency add to approach queue as normal
 			else {
 				planesApproaching.enqueue(newPlane);
 			}
+			
 			//Send a plane to a runway
 			addToLeastBusyRunway();
 		}
+		
 		//Send last plane to a runway
 		if( planeNum == MAX_PLANES ) {
 			addToLeastBusyRunway();
 		}
-		
 		
 		//Processing plane on runway
 		setRunwaysEmpty(0);
@@ -175,32 +194,31 @@ public class Airport extends TimerTask {
 			if( runway.isEmpty() && (simTime > 5)) {
 				setRunwaysEmpty(getRunwaysEmpty() + 1);
 			}
-			
 		}
 		
-		
 		//Printing Simulation
-		System.out.println("empty " + runwaysEmpty);
 		System.out.println("Simulation time (seconds):\t" + simTime + "\n\n");
 		planesApproaching.printQueue("Approaching:");
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
 		}
 		
-		
 		//Ends the simulation when all planes processed
-		if( runwaysEmpty == runwayStorage.length ) {
+		if( (runwaysEmpty == runwayStorage.length) && planesApproaching.isEmpty() ) {
 			clear();
-			System.out.println("Finished!\n\nProcessed " + MAX_PLANES + " in " +simTime  + " seconds.");
+			System.out.println("Finished!\n\nProcessed " + MAX_PLANES + " planes in " + simTime  + " seconds.");
 			cancel();
 		}
 		
 		//Increments every second.
 		simTime++;
-	}
+	}//end run()
+	
+	
+	
 	
 	/**
-	 * Conditional Logic to send plane in approaching queue to the least busy runway.
+	 * Conditional Logic to send plane in approaching queue to the least busy runway
 	 */
 	private void addToLeastBusyRunway() {
 		if( !planesApproaching.isEmpty() ) {
@@ -220,8 +238,12 @@ public class Airport extends TimerTask {
 	}
 	
 	
+	
+	
+	//
 	//
 	//Getters and Setters
+	
 	/**
 	 * Get simulation settings for max number of planes to spawn.
 	 * @return int Max number of planes to spawn
@@ -282,6 +304,8 @@ public class Airport extends TimerTask {
 	public void setMaxSpawnDistance(int maxDistance) {
 		this.MAX_DISTANCE = maxDistance;
 	}
+	
+	
 	
 	
 	/**

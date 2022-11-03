@@ -11,7 +11,6 @@ public class Runway {
 	private Airplane previousLanded;
 	private int runwayId;
 	private int numPlanesProcessed = 0;
-	private int numWaiting = 0;
 	private int timeOfFirstPlane = 0;
 	private int LANDING_TIME_SEC = 10;
 	private boolean timeHasBeenSet = false;
@@ -21,11 +20,10 @@ public class Runway {
 	}
 	
 	public void sendToRunway(Airplane plane) {
-		numWaiting += 1;
+
 		readyToLand.enqueue(plane);
 	}
 	public void prioritySendToRunway(Airplane plane) {
-		numWaiting += 1;
 		readyToLand.enqueueFront(plane);
 	}
 	
@@ -35,7 +33,6 @@ public class Runway {
 	}
 	
 	public Airplane planeProcessed() {
-		numWaiting -= 1;
 		numPlanesProcessed++;
 		previousLanded = readyToLand.dequeue().getData();
 		return previousLanded;
@@ -62,10 +59,7 @@ public class Runway {
 	public int getNumPlanesProcessed() {
 		return numPlanesProcessed;
 	}
-	public int getNumWaiting() {
-		return numWaiting;
-	}
-	public Airplane getTop() {
+	public Airplane getTopPlane() {
 		return readyToLand.getFrontData();
 	}
 

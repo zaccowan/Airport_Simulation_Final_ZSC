@@ -75,8 +75,7 @@ public class Airplane extends TimerTask {
 	public boolean hasArrived() {
 		return hasArrived;
 	}
-
-
+	
 	private void setHasArrived(boolean hasArrived) {
 		this.hasArrived = hasArrived;
 	}
