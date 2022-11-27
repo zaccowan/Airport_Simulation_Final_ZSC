@@ -104,45 +104,94 @@ public class Runway {
 	//
 	//Getters and Setters
 	
+	/**
+	 * Get the last airplane that was dequeued.
+	 * @return Airplane that was last dequeued.
+	 */
 	public Airplane getPreviousLanded() {
 		return previousLanded;
 	}
 
+	
+	/**
+	 * Get the id of the runway.
+	 * @return Id value for runway
+	 */
 	public int getRunwayId() {
 		return runwayId;
 	}
 
+	/**
+	 * Set the id of the runway
+	 * @param runwayId Id to set for runway
+	 */
 	public void setRunwayId(int runwayId) {
 		this.runwayId = runwayId;
 	}
 
+	/**
+	 * Get the number of planes processed by the runway
+	 * @return The number of planes processed by the runway
+	 */
 	public int getNumPlanesProcessed() {
 		return numPlanesProcessed;
 	}
+	/**
+	 * Get plane at the front of runway queue
+	 * @return Airplane at the front of the queue.
+	 */
 	public Airplane getTopPlane() {
 		return readyToLand.getFrontData();
 	}
 
+	/**
+	 * Get the time in which the runway recieved its first plane.
+	 * Recieved from global clock inside of airport.
+	 * @return the time in seconds
+	 */
 	public int getTimeOfFirstPlane() {
 		return timeOfFirstPlane;
 	}
 
+	/**
+	 * Set the time in which the runway recieved its first plane.
+	 * Recieved from global clock inside of airport.
+	 * @param timeOfFirstPlane Global clock time in seconds at which the first plane was received.
+	 */
 	public void setTimeOfFirstPlane(int timeOfFirstPlane) {
 		this.timeOfFirstPlane = timeOfFirstPlane;
 	}
 
+	/**
+	 * Get the time needed to land a plane
+	 * @return The time needed to land a plane
+	 */
 	public int getLANDING_TIME_SEC() {
 		return LANDING_TIME_SEC;
 	}
 
-	public void setLANDING_TIME_SEC(int lANDING_TIME_SEC) {
-		LANDING_TIME_SEC = lANDING_TIME_SEC;
+	/**
+	 * Set the time needed to land a plane.
+	 * @param LANDING_TIME_SEC Time in seconds
+	 */
+	public void setLANDING_TIME_SEC(int LANDING_TIME_SEC) {
+		LANDING_TIME_SEC = LANDING_TIME_SEC;
 	}
 
+	/**
+	 * Get the flag that identifies that a runway has had a time set for first plane received.
+	 * Prevents overwriting of the initial time.
+	 * @return True if timeOfFirstPlane has been set.
+	 */
 	public boolean getTimeHasBeenSet() {
 		return timeHasBeenSet;
 	}
 
+	/**
+	 * Set the flag that identifies that a runway has had a time set for first plane received.
+	 * Prevents overwriting of the initial time.
+	 * @param timeHasBeenSet True if timeOfFirstPlane has been set.
+	 */
 	public void setTimeHasBeenSet(boolean timeHasBeenSet) {
 		this.timeHasBeenSet = timeHasBeenSet;
 	}

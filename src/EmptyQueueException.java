@@ -8,10 +8,17 @@
 public class EmptyQueueException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Default message for empty queue exception
+	 */
 	public EmptyQueueException() {
 		this("Queue is empty.");
 	}//closes constructor
 	
+	/**
+	 * Custom message for empty queue exception
+	 * @param msg Message for exception.
+	 */
 	public EmptyQueueException(String msg) {
 		super(msg);
 	}

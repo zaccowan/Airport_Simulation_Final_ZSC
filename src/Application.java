@@ -5,9 +5,14 @@
  * Fall/2022
  */
 public class Application {
-	public static void main(String [] args ) {
+	/**
+	 * Main function for application.
+	 * @param args Calls
+	 * @throws MaxRunwayException Exception thrown if airport object tries to exceed 20.
+	 */
+	public static void main(String [] args ) throws MaxRunwayException {
 	
-		Airport airport = new Airport();
+		Airport airport = new Airport(21);
 		airport.runSimulation();
 	}
 	
