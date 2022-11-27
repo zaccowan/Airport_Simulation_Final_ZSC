@@ -124,7 +124,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Max distance to spawn a plane from airport.
 	 */
-	private int MAX_DISTANCE = 10;
+	private int MAX_DISTANCE = 5;
 	
 	/**
 	 * Keeps track of the number of emergency planes during the simulation.
