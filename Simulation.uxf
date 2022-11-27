@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>693</y>
+      <w>369</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>::Airplane
+--
+-planeId: int
+-milesFromAirport: int
+-isEmergency: boolean
+-hasArrived: boolean
+-simClock: Timer
+
+--
+~Airplane(): ctor
++run(): void
++toString(): String
++decrementDistance(): void
+
+--
+Responsibilities:
+	- Stores plane identification
+	- Stores distance from airport
+	- Stores whether or not plane needs emergency landing
+	- Stores whether or not plane has arrived to airport
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>693</y>
+      <w>783</w>
+      <h>558</h>
+    </coordinates>
+    <panel_attributes>::Airport
+--
+-planesApproaching = new PriorityQueue&lt;Airplane&gt;(): PriorityQueue&lt;Airplane&gt;
+-runwayStorage: Runway[]
+-newPlane1: Airplane
+-indexOfLastRunway = 0: int
+-runwaysEmpty: int
+-MAX_PLANES = 10: int
+-SPAWN_RATE = 0.7: double
+-EMERGENCY_RATE = 0.1: double
+-MAX_DISTANCE = 5: int
+-numEmergencyPlanesSpawned = 0: int
+~simClock: Timer
++planeNum = 1: int
++simTime = 0: int
+
+--
+~Airport(): ctor
+~Airport(int numberOfRunways, int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance): ctor
+~Airport(int numberOfRunways): ctor
++runSimulation(): void
++run(): void
+-addToLeastBusyRunway(): void
++clear(): void
+
+--
+Responsibilities:
+	- Runs main simulation
+	- Stores 1 to 20 runways using Priority Queues
+	- Spawns planes randomly based on spawn rate value
+	- Spawns emergency planes randomly based on emergency rate value
+	- Sends planes in approach queue to runway with the least amount of wait time
+	- Stores data about the simulation
+	   - Number of planes processed
+	   - Spawn Rate
+	   - Emergency Rate
+	   - Max Distance From Airport (upon spawn)
+	   - Number of emergency planes spawned</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>135</y>
+      <w>432</w>
+      <h>342</h>
+    </coordinates>
+    <panel_attributes>::Runway
+--
+-readyToLand = new PriorityQueue&lt;Airplane&gt;(): PriorityQueue&lt;Airplane&gt;
+-previousLanded: Airplane
+-runwayId: int
+-numPlanesProcessed = 0: int
+-timeOfFirstPlane = 0: int
+-LANDING_TIME_SEC = 10: int
+-timeHasBeenSet = false: boolean
+
+--
+~Runway(int runwayId): ctor
++sendToRunway(Airplane plane): void
++prioritySendToRunway(Airplane plane): void
++printWaitingQueue(): void
++planeProcessed(): Airplane
++isEmpty(): boolean
+
+--
+Responsibilities
+- Stores using a priority queue
+- Processes planes in the queue
+- Dequeues planes once processed
+- Stores the most recently processed plane
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
