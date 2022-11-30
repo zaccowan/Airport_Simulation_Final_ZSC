@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>4</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>468</x>
-      <y>412</y>
-      <w>192</w>
-      <h>128</h>
+      <x>266</x>
+      <y>245</y>
+      <w>336</w>
+      <h>224</h>
     </coordinates>
     <panel_attributes>Airplane
 --
@@ -36,14 +36,14 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>712</x>
-      <y>572</y>
-      <w>348</w>
-      <h>248</h>
+      <x>637</x>
+      <y>518</y>
+      <w>560</w>
+      <h>434</h>
     </coordinates>
     <panel_attributes>Airport
 --
--planesApproaching = new PriorityQueue&lt;Airplane&gt;(): PriorityQueue&lt;Airplane&gt;
+-planesApproaching = new ConcurrentLinkedDeque&lt;Airplane&gt;(): ConcurrentLinkedDeque&lt;Airplane&gt;
 -runwayStorage: Runway[]
 -newPlane1: Airplane
 -indexOfLastRunway = 0: int
@@ -84,10 +84,10 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>468</x>
-      <y>572</y>
-      <w>192</w>
-      <h>152</h>
+      <x>266</x>
+      <y>518</y>
+      <w>336</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Runway
 --
@@ -119,173 +119,61 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>260</x>
-      <y>572</y>
-      <w>140</w>
-      <h>152</h>
+      <x>266</x>
+      <y>819</y>
+      <w>189</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>PriorityQueue
---
--queueStorage = new LinkedList&lt;T&gt;(): LinkedList&lt;T&gt;
---
-~PriorityQueue(): ctor
-~PriorityQueue(T newEntry): ctor
-+enqueueFront(T newEntry): void
-+enqueue(T newEntry): void
-+dequeue(): Node&lt;T&gt;
-+getFront(): Node&lt;T&gt;
-+getBack(): Node&lt;T&gt;
-+getFrontData(): T
-+isEmpty(): boolean
-+clear(): void
-+getNumInQueue(): int
-+printQueue(): void
-+printQueue(String message): void
+    <panel_attributes>java.util.PriorityQueue
 --
 Responsibility
-- Used for storing Airplanes on approach
-- Used for storing Airplanes in runway wait line
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>260</x>
-      <y>488</y>
-      <w>140</w>
-      <h>52</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;interface&gt;&gt;
-QueueInterface
---
-+enqueue(T newEntry): void
-+dequeue(): Node&lt;T&gt;
-+getFront(): Node&lt;T&gt;
-+isEmpty(): boolean
-+clear(): void
+- Used for storing Airplanes in runway
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>324</x>
-      <y>536</y>
-      <w>12</w>
-      <h>44</h>
+      <x>350</x>
+      <y>777</y>
+      <w>21</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>462</y>
+      <w>21</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>595</x>
+      <y>546</y>
+      <w>56</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>100</x>
-      <y>572</y>
-      <w>112</w>
-      <h>124</h>
-    </coordinates>
-    <panel_attributes>LinkedList
---
--head: Node&lt;T&gt;
--tail: Node&lt;T&gt;
--length: int
---
-+LinkedList(): ctor
-+isEmpty(): boolean
-+getList(): Node&lt;T&gt;
-+addNodeToHead(Node&lt;T&gt; aNode): void
-+addNode(Node&lt;T&gt; aNode): void
-+removeFrontNode(): Node&lt;T&gt;
-+getHead(): Node&lt;T&gt;
-+setHead(Node&lt;T&gt; newHead): void
-+getTail(): Node&lt;T&gt;
-+setTail(Node&lt;T&gt; newTail): void
-+getLength(): int
-+setLength(int newLength): void
---
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>208</x>
-      <y>588</y>
-      <w>60</w>
-      <h>12</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>396</x>
-      <y>588</y>
-      <w>80</w>
-      <h>12</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-bg=BLACK</panel_attributes>
-    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>384</x>
-      <y>536</y>
-      <w>188</w>
-      <h>44</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;50.0;450.0;50.0;450.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>572</x>
-      <y>536</y>
-      <w>12</w>
-      <h>44</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>384</x>
-      <y>720</y>
-      <w>336</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-bg=BLACK</panel_attributes>
-    <additional_attributes>820.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>656</x>
-      <y>588</y>
-      <w>64</w>
-      <h>12</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-bg=BLACK</panel_attributes>
-    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1128</x>
-      <y>588</y>
-      <w>112</w>
-      <h>36</h>
+      <x>469</x>
+      <y>910</y>
+      <w>133</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>Application
 --
@@ -296,13 +184,42 @@ bg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
-      <y>608</y>
-      <w>80</w>
-      <h>12</h>
+      <x>595</x>
+      <y>924</y>
+      <w>56</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 bg=BLACK</panel_attributes>
-    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>637</x>
+      <y>406</y>
+      <w>273</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>java.util.concurrent.ConcurrentLinkedDeque
+--
+Responsibility
+- Used for storing spawned airplanes in approaching queue
+- Doubly linked used to send emergency spawned planes 
+   to the top of the approaching queue
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>476</y>
+      <w>21</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
