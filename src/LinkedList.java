@@ -10,11 +10,16 @@ public class LinkedList<T> {
 	private Node<T> tail;
 	private int length;
 	
+	/**
+	 * Default LinkedList.
+	 * No nodes,
+	 * length of zero.
+	 */
 	public LinkedList()
 	{
 		head=null;
 		length=0;
-		tail=head;
+		tail=null;
 	}
 	
 	/**
@@ -36,6 +41,10 @@ public class LinkedList<T> {
 		return head;
 	}
 	
+	/**
+	 * Add a node to beginning of list.
+	 * @param aNode Node to add to list
+	 */
 	public void addNodeToHead(Node<T> aNode) {
 		if (isEmpty() ) {
 			addNode(aNode);
@@ -46,7 +55,7 @@ public class LinkedList<T> {
 	}
 	
 	/**
-	* Adds a node to the list
+	* Adds a node to the end of list
 	* @param aNode Node to add to list
 	*/
 	public void addNode(Node<T> aNode)
@@ -77,23 +86,47 @@ public class LinkedList<T> {
 		return dequeuedEntry;
 	}
 	
+	/**
+	 * Get the head of linked list.
+	 * @return Node at the beginning of linked list.
+	 */
 	public Node<T> getHead() {
 		return head;
 	}
+	/**
+	 * Set the head of linked list.
+	 * @param newHead Node to replace head with.
+	 */
 	public void setHead(Node<T> newHead) {
-		head = newHead;
+		this.head = newHead;
 	}
+	/**
+	 * Get the tail of the list.
+	 * @return Node at the end of linked list.
+	 */
 	public Node<T> getTail() {
 		return head;
 	}
+	/**
+	 * Set the tail of linked list.
+	 * @param newTail Node to replace tail with.
+	 */
 	public void setTail(Node<T> newTail) {
-		tail = newTail;
+		this.tail = newTail;
 	}
+	/**
+	 * Get the length of the list.
+	 * @return The length of the list
+	 */
 	public int getLength() {
 		return length;
 	}
+	/**
+	 * Set the length Node to replace tail with.
+	 * @param newLength Length of the list.
+	 */
 	public void setLength(int newLength) {
-		length = newLength;
+		this.length = newLength;
 	}
 	
 }

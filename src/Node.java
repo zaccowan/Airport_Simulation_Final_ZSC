@@ -9,11 +9,21 @@ class Node<T> {
     private T data;
 	private Node<T> nextNode;
 	
+	/**
+	 * Default node.
+	 * Null data,
+	 * no next node.
+	 */
 	public Node()
 	{
 		nextNode=null;
 		data=null;
 	}
+	/**
+	 * Default node with data.
+	 * No next node.
+	 * @param newData Data to store in node.
+	 */
 	public Node(T newData)
 	{
 		nextNode=null;

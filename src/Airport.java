@@ -38,15 +38,18 @@ public class Airport extends TimerTask {
 	 * @param spawnRate Rate of spawning planes.
 	 * @param emergencyRate Rate of making emergency planes.
 	 * @param maxSpawnDistance Max distance to spawn planes.
+	 * @throws MaxRunwayException if number of runways to use exceeds 20.
 	 */
-	Airport(int numberOfRunways, int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance) {
+	Airport(int numberOfRunways, int maxPlanes, double spawnRate, double emergencyRate, double maxSpawnDistance) throws MaxRunwayException {
 		simClock = new Timer();
-		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
+		if( (numberOfRunways > 0) && (numberOfRunways <= 20)) {
 			runwayStorage = new Runway[numberOfRunways];
 			planesApproaching = new ConcurrentLinkedDeque<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
 				runwayStorage[index] = new Runway(index+1);
 			}
+		} else {
+			throw new MaxRunwayException("Cannot instantiate " + numberOfRunways + " runways. Max is 20." );
 		}
 		setMaxPlanes(maxPlanes);
 		setSpawnRate(spawnRate);
@@ -55,17 +58,20 @@ public class Airport extends TimerTask {
 	}
 	/**
 	 * Initialize airport with custom number of runways.
-	 * Max number of runways is 10.
+	 * Max number of runways is 20.
 	 * @param numberOfRunways Number of runways to create.
+	 * @throws MaxRunwayException if number of runways to use exceeds 20.
 	 */
-	Airport(int numberOfRunways) {
+	Airport(int numberOfRunways) throws MaxRunwayException {
 		simClock = new Timer();
-		if( (numberOfRunways > 0) && (numberOfRunways <= 10)) {
+		if( (numberOfRunways > 0) && (numberOfRunways <= 20)) {
 			runwayStorage = new Runway[numberOfRunways];
 			planesApproaching = new ConcurrentLinkedDeque<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
 				runwayStorage[index] = new Runway(index+1);
 			}
+		} else {
+			throw new MaxRunwayException("Cannot instantiate " + numberOfRunways + " runways. Max is 20." );
 		}
 	}
 	
@@ -89,7 +95,7 @@ public class Airport extends TimerTask {
 	/**
 	 * New plane spawned within the simulation
 	 */
-	private Airplane newPlane;
+	private Airplane newPlane1;
 	
 	/**
 	 * Stores the index of the last runway that recieved a plane.
@@ -126,7 +132,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Max distance to spawn a plane from airport.
 	 */
-	private int MAX_DISTANCE = 10;
+	private int MAX_DISTANCE = 5;
 	
 	/**
 	 * Keeps track of the number of emergency planes during the simulation.
@@ -189,7 +195,7 @@ public class Airport extends TimerTask {
 		if( (spawnSeed < SPAWN_RATE) && (planeNum <= MAX_PLANES) ) {
 			
 			//Newly spawned plane info
-			newPlane = new Airplane();
+			Airplane newPlane = new Airplane();
 			newPlane.setPlaneId(planeNum);
 			newPlane.setDistance(distance);
 			planeNum++;
@@ -356,9 +362,18 @@ public class Airport extends TimerTask {
 	public void setMaxSpawnDistance(int maxDistance) {
 		this.MAX_DISTANCE = maxDistance;
 	}
+	/**
+	 * Get the number of runways empty.
+	 * @return Number of runways empty
+	 */
 	public int getRunwaysEmpty() {
 		return runwaysEmpty;
 	}
+	
+	/**
+	 * Set the number of runways empty.
+	 * @param runwaysEmpty Number of runways empty
+	 */
 	public void setRunwaysEmpty(int runwaysEmpty) {
 		this.runwaysEmpty = runwaysEmpty;
 	}
