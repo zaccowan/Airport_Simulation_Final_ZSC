@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>4</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>144</x>
-      <y>693</y>
-      <w>369</w>
-      <h>288</h>
+      <x>468</x>
+      <y>412</y>
+      <w>192</w>
+      <h>128</h>
     </coordinates>
-    <panel_attributes>::Airplane
+    <panel_attributes>Airplane
 --
 -planeId: int
 -milesFromAirport: int
@@ -36,12 +36,12 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>621</x>
-      <y>693</y>
-      <w>783</w>
-      <h>558</h>
+      <x>712</x>
+      <y>572</y>
+      <w>348</w>
+      <h>248</h>
     </coordinates>
-    <panel_attributes>::Airport
+    <panel_attributes>Airport
 --
 -planesApproaching = new PriorityQueue&lt;Airplane&gt;(): PriorityQueue&lt;Airplane&gt;
 -runwayStorage: Runway[]
@@ -84,12 +84,12 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>135</x>
-      <y>135</y>
-      <w>432</w>
-      <h>342</h>
+      <x>468</x>
+      <y>572</y>
+      <w>192</w>
+      <h>152</h>
     </coordinates>
-    <panel_attributes>::Runway
+    <panel_attributes>Runway
 --
 -readyToLand = new PriorityQueue&lt;Airplane&gt;(): PriorityQueue&lt;Airplane&gt;
 -previousLanded: Airplane
@@ -115,5 +115,194 @@ Responsibilities
 - Stores the most recently processed plane
 </panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>572</y>
+      <w>140</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>PriorityQueue
+--
+-queueStorage = new LinkedList&lt;T&gt;(): LinkedList&lt;T&gt;
+--
+~PriorityQueue(): ctor
+~PriorityQueue(T newEntry): ctor
++enqueueFront(T newEntry): void
++enqueue(T newEntry): void
++dequeue(): Node&lt;T&gt;
++getFront(): Node&lt;T&gt;
++getBack(): Node&lt;T&gt;
++getFrontData(): T
++isEmpty(): boolean
++clear(): void
++getNumInQueue(): int
++printQueue(): void
++printQueue(String message): void
+--
+Responsibility
+- Used for storing Airplanes on approach
+- Used for storing Airplanes in runway wait line
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>488</y>
+      <w>140</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+QueueInterface
+--
++enqueue(T newEntry): void
++dequeue(): Node&lt;T&gt;
++getFront(): Node&lt;T&gt;
++isEmpty(): boolean
++clear(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>536</y>
+      <w>12</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>100</x>
+      <y>572</y>
+      <w>112</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes>LinkedList
+--
+-head: Node&lt;T&gt;
+-tail: Node&lt;T&gt;
+-length: int
+--
++LinkedList(): ctor
++isEmpty(): boolean
++getList(): Node&lt;T&gt;
++addNodeToHead(Node&lt;T&gt; aNode): void
++addNode(Node&lt;T&gt; aNode): void
++removeFrontNode(): Node&lt;T&gt;
++getHead(): Node&lt;T&gt;
++setHead(Node&lt;T&gt; newHead): void
++getTail(): Node&lt;T&gt;
++setTail(Node&lt;T&gt; newTail): void
++getLength(): int
++setLength(int newLength): void
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>588</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>396</x>
+      <y>588</y>
+      <w>80</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>536</y>
+      <w>188</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;50.0;450.0;50.0;450.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>572</x>
+      <y>536</y>
+      <w>12</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>720</y>
+      <w>336</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>820.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>656</x>
+      <y>588</y>
+      <w>64</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>588</y>
+      <w>112</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Application
+--
++main(String[] args): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1056</x>
+      <y>608</y>
+      <w>80</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
