@@ -83,10 +83,9 @@ public class Airport extends TimerTask {
 	//Plane management
 	
 	/**
-	 * Deque to store newly spawned airplanes on approach to airport.
+	 * Linked List Deque to store newly spawned airplanes on approach to airport.
 	 */
 	private ConcurrentLinkedDeque<Airplane> planesApproaching = new ConcurrentLinkedDeque<Airplane>();
-//	private PriorityQueue<Airplane> planesApproaching = new ConcurrentLinkedDeque<Airplane>();
 	/**
 	 * Stores runways for airport
 	 * Allows for a variable number of runways to be instantiated upon creation of an aiport object.

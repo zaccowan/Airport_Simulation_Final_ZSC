@@ -25,7 +25,6 @@ public class Runway {
 	 * Stores planes to process whenever a plane is sent to the runway.
 	 */
 	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
-//	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
 	/**
 	 * Stores the most recently processed plane.
 	 */
