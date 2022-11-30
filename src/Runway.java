@@ -1,4 +1,6 @@
+import java.util.PriorityQueue;
 
+//import java.util.PriorityQueue;
 /**
  * Runway class for storing planes and managing landing of planes.
  * @author Zachary Cowan
@@ -14,9 +16,6 @@ public class Runway {
 	Runway(int runwayId) {
 		this.runwayId = runwayId;
 	}
-
-	
-	
 	
 	//
 	//
@@ -26,6 +25,7 @@ public class Runway {
 	 * Stores planes to process whenever a plane is sent to the runway.
 	 */
 	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
+//	private PriorityQueue<Airplane> readyToLand = new PriorityQueue<Airplane>();
 	/**
 	 * Stores the most recently processed plane.
 	 */
@@ -65,29 +65,35 @@ public class Runway {
 	 * @param plane Plane to put in runway processing queue
 	 */
 	public void sendToRunway(Airplane plane) {
-		readyToLand.enqueue(plane);
+		readyToLand.add(plane);
 	}
 	/**
 	 * Recieves an airplane and adds it to front of wait list.
 	 * @param plane Plane to put in runway processing queue
 	 */
 	public void prioritySendToRunway(Airplane plane) {
-		readyToLand.enqueueFront(plane);
+		readyToLand.add(plane);
 	}
 	/**
 	 * Prints the runway id and all Airplanes waiting in queue
 	 */
 	public void printWaitingQueue() {
-		readyToLand.printQueue("Runway " + runwayId + " queue:");
+		System.out.println("Runway " + runwayId + ":");
+		for( Airplane plane : readyToLand ) {
+			System.out.print("\tPlane " + plane.toString() + "\n");
+		}
 	}
 	/**
 	 * Processes a plane and dequeues it from the wait list
 	 * @return Airplane plane at top of list.
 	 */
 	public Airplane planeProcessed() {
-		numPlanesProcessed++;
-		previousLanded = readyToLand.dequeue().getData();
-		return previousLanded;
+		if( (readyToLand.peek().getDistance() == 0) || (readyToLand.peek().isEmergency())) {
+			numPlanesProcessed++;
+			previousLanded = readyToLand.poll();
+			return previousLanded;
+		}
+		return null;
 	}
 	/**
 	 * See if runway has any planes to process.
@@ -120,7 +126,7 @@ public class Runway {
 		return numPlanesProcessed;
 	}
 	public Airplane getTopPlane() {
-		return readyToLand.getFrontData();
+		return readyToLand.peek();
 	}
 
 	public int getTimeOfFirstPlane() {

@@ -7,7 +7,9 @@ import java.util.TimerTask;
  * @version 11/1/22
  * Fall/2022
  */
-public class Airplane extends TimerTask {
+public class Airplane extends TimerTask implements Comparable<Airplane> {
+	
+	//extends TimerTask
 
 	private int planeId;
 	private int milesFromAirport;
@@ -60,6 +62,9 @@ public class Airplane extends TimerTask {
 	public void setDistance(int distance) {
 		this.milesFromAirport = distance;
 	}
+	public void decrementDistance() {
+		this.milesFromAirport--;
+	}
 
 
 	public boolean isEmergency() {
@@ -76,8 +81,20 @@ public class Airplane extends TimerTask {
 		return hasArrived;
 	}
 	
-	private void setHasArrived(boolean hasArrived) {
+	public void setHasArrived(boolean hasArrived) {
 		this.hasArrived = hasArrived;
+	}
+
+
+	@Override
+	public int compareTo(Airplane o) {
+		if( this.getDistance() < o.getDistance() ) {
+			return -1;
+		} else if( this.getDistance() > o.getDistance() ) {
+			return 1;
+		} else  {
+			return 0;
+		}
 	}
 
 	
