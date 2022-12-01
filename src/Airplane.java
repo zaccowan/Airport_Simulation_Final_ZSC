@@ -35,11 +35,15 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 	 */
 	@Override
 	public void run() {
-		if( (milesFromAirport > 0) && !isEmergency ) {
+		if( (milesFromAirport > 0) ) {
 			milesFromAirport--;;
 		} else if( milesFromAirport == 0 ) {
 			setHasArrived(true);
 			cancel();
+		}
+		if( isEmergency() ) {
+			setDistance(0);
+			setHasArrived(true);
 		}
 		
 	}
@@ -65,11 +69,11 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 	 * Gives plane id as well as information about flight: is emergency, is at airport, is x distance away.
 	 */
 	public String toString() {
-		String message = "plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
+		String message = "Plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
 		if( hasArrived ) {
-			message = "plane " + String.valueOf(getPlaneId()) + " is at airport.";
+			message = "Plane " + String.valueOf(getPlaneId()) + " is at airport.";
 		} else if( isEmergency ) {
-			message = "plane " + String.valueOf(getPlaneId()) + " emergency landing";
+			message = "Plane " + String.valueOf(getPlaneId()) + " emergency landing";
 		}
 		return message;
 	}
@@ -138,6 +142,9 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 	 */
 	@Override
 	public int compareTo(Airplane o) {
+		if( this.isEmergency() ) {
+			return -2;
+		}
 		if( this.getDistance() < o.getDistance() ) {
 			return -1;
 		} else if( this.getDistance() > o.getDistance() ) {

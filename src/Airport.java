@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.PriorityQueue;
 
 /**
  * Airport class for managing runways and simulating plane processing.
@@ -21,7 +21,7 @@ public class Airport extends TimerTask {
 	 */
 	Airport() {
 		simClock = new Timer();
-		planesApproaching = new ConcurrentLinkedDeque<Airplane>();
+		planesApproaching = new PriorityQueue<Airplane>();
 		runwayStorage = new Runway[3];
 		runwayStorage[0] = new Runway(1);
 		runwayStorage[1] = new Runway(2);
@@ -44,17 +44,39 @@ public class Airport extends TimerTask {
 		simClock = new Timer();
 		if( (numberOfRunways > 0) && (numberOfRunways <= 20)) {
 			runwayStorage = new Runway[numberOfRunways];
-			planesApproaching = new ConcurrentLinkedDeque<Airplane>();
+			planesApproaching = new PriorityQueue<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
 				runwayStorage[index] = new Runway(index+1);
 			}
-		} else {
+		} 
+		else if( numberOfRunways == 0) {
+			runwayStorage = new Runway[3];
+			runwayStorage[0] = new Runway(1);
+			runwayStorage[1] = new Runway(2);
+			runwayStorage[2] = new Runway(3);
+		} 
+		else {
 			throw new MaxRunwayException("Cannot instantiate " + numberOfRunways + " runways. Max is 20." );
 		}
-		setMaxPlanes(maxPlanes);
-		setSpawnRate(spawnRate);
-		setEmergencyRate(emergencyRate);
-		planesApproaching = new ConcurrentLinkedDeque<Airplane>();
+		
+		if( maxPlanes == 0 ) {
+			setMaxPlanes(10);
+		} else {
+			setMaxPlanes(maxPlanes);
+		}
+		
+		if( spawnRate == 2 ) {
+			setSpawnRate(0.7);
+		} else {
+			setSpawnRate(spawnRate);
+		}
+		
+		if( emergencyRate == 2 ) {
+			setEmergencyRate(0.1);
+		} else {
+			setSpawnRate(emergencyRate);
+		}
+		planesApproaching = new PriorityQueue<Airplane>();
 	}
 	/**
 	 * Initialize airport with custom number of runways.
@@ -66,7 +88,7 @@ public class Airport extends TimerTask {
 		simClock = new Timer();
 		if( (numberOfRunways > 0) && (numberOfRunways <= 20)) {
 			runwayStorage = new Runway[numberOfRunways];
-			planesApproaching = new ConcurrentLinkedDeque<Airplane>();
+			planesApproaching = new PriorityQueue<Airplane>();
 			for( int index = 0 ; index < numberOfRunways ; index++ ) {
 				runwayStorage[index] = new Runway(index+1);
 			}
@@ -85,7 +107,7 @@ public class Airport extends TimerTask {
 	/**
 	 * Linked List Deque to store newly spawned airplanes on approach to airport.
 	 */
-	private ConcurrentLinkedDeque<Airplane> planesApproaching = new ConcurrentLinkedDeque<Airplane>();
+	private PriorityQueue<Airplane> planesApproaching = new PriorityQueue<Airplane>();
 	/**
 	 * Stores runways for airport
 	 * Allows for a variable number of runways to be instantiated upon creation of an aiport object.
@@ -203,7 +225,7 @@ public class Airport extends TimerTask {
 			if( spawnSeed < EMERGENCY_RATE ) {
 				numEmergencyPlanesSpawned++;
 				newPlane.setEmergency(true);
-				planesApproaching.addFirst(newPlane);
+				planesApproaching.add(newPlane);
 			} 
 			
 			//Not emergency add to approach queue as normal
@@ -211,12 +233,19 @@ public class Airport extends TimerTask {
 				planesApproaching.add(newPlane);
 			}
 			
-			//Send a plane to a runway
-			addToLeastBusyRunway();
+			//Send a plane to a runway every 3 seconds
+			if( planesApproaching.peek().getDistance() < 5 ) {
+				addToLeastBusyRunway();
+			}
+//			for( Airplane plane : planesApproaching ) {
+//				if( (plane.getDistance() <= 2) || plane.isEmergency() ) {
+//					addToLeastBusyRunway();
+//				}
+//			}
 		}
 		
 		//Send last plane to a runway
-		if( planeNum == MAX_PLANES ) {
+		if( (planeNum == MAX_PLANES+1 ) ) {
 			addToLeastBusyRunway();
 		}
 		
@@ -237,8 +266,7 @@ public class Airport extends TimerTask {
 		System.out.println("Simulation time (seconds):\t" + simTime + "\n\n");
 		System.out.println("Planes Approaching:");
 		for( Airplane plane : planesApproaching ) {
-			System.out.println("yay");
-			System.out.print("\tPlane " + plane.getPlaneId() + "\n");
+			System.out.print("\t" + plane.toString() + "\n");
 		}
 		for( Runway runway : runwayStorage) {
 			runway.printWaitingQueue();
@@ -249,7 +277,7 @@ public class Airport extends TimerTask {
 			clear();
 			System.out.println("Finished simulation!"
 					+ "\n\n"
-					+ "Processed " + MAX_PLANES + " planes in " + simTime  + " seconds.\n");
+					+ "Processed " + (planeNum - 1) + " planes in " + simTime  + " seconds.\n");
 			System.out.println("Simulation settings and fun data:\n"
 					+ "\tMax Planes: " + getMaxPlanes() + "\n"
 					+ "\tSpawn Rate: " + getSpawnRate() + "\n"
@@ -272,7 +300,7 @@ public class Airport extends TimerTask {
 	private void addToLeastBusyRunway() {
 		if( !planesApproaching.isEmpty() ) {
 			if( indexOfLastRunway < (runwayStorage.length) ) {
-				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.poll());
+				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.remove());
 				if( !runwayStorage[indexOfLastRunway].getTimeHasBeenSet() ) {
 					runwayStorage[indexOfLastRunway].setTimeOfFirstPlane(simTime);
 					runwayStorage[indexOfLastRunway].setTimeHasBeenSet(true);
@@ -280,7 +308,7 @@ public class Airport extends TimerTask {
 				indexOfLastRunway++;
 			} else {
 				indexOfLastRunway = 0;
-				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.poll());
+				runwayStorage[indexOfLastRunway].sendToRunway(planesApproaching.remove());
 				indexOfLastRunway++;
 			}
 		}
