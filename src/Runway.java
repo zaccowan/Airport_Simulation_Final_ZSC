@@ -67,13 +67,6 @@ public class Runway {
 		readyToLand.add(plane);
 	}
 	/**
-	 * Recieves an airplane and adds it to front of wait list.
-	 * @param plane Plane to put in runway processing queue
-	 */
-	public void prioritySendToRunway(Airplane plane) {
-		readyToLand.add(plane);
-	}
-	/**
 	 * Prints the runway id and all Airplanes waiting in queue
 	 */
 	public void printWaitingQueue() {
