@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>108</x>
-      <y>153</y>
+      <x>117</x>
+      <y>180</y>
       <w>432</w>
       <h>288</h>
     </coordinates>
@@ -36,8 +36,8 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>585</x>
-      <y>504</y>
+      <x>594</x>
+      <y>531</y>
       <w>720</w>
       <h>558</h>
     </coordinates>
@@ -45,7 +45,7 @@ Responsibilities:
 --
 -planesApproaching = new ConcurrentLinkedDeque&lt;Airplane&gt;(): ConcurrentLinkedDeque&lt;Airplane&gt;
 -runwayStorage: Runway[]
--newPlane1: Airplane
+-newPlane: Airplane
 -indexOfLastRunway = 0: int
 -runwaysEmpty: int
 -MAX_PLANES = 10: int
@@ -84,8 +84,8 @@ Responsibilities:
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>108</x>
-      <y>504</y>
+      <x>117</x>
+      <y>531</y>
       <w>432</w>
       <h>342</h>
     </coordinates>
@@ -96,6 +96,7 @@ Responsibilities:
 -runwayId: int
 -numPlanesProcessed = 0: int
 -timeOfFirstPlane = 0: int
+-globalSimTime: int
 -LANDING_TIME_SEC = 10: int
 -timeHasBeenSet = false: boolean
 
@@ -119,8 +120,8 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>108</x>
-      <y>891</y>
+      <x>117</x>
+      <y>918</y>
       <w>243</w>
       <h>72</h>
     </coordinates>
@@ -135,8 +136,8 @@ Responsibility
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>216</x>
-      <y>837</y>
+      <x>225</x>
+      <y>864</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -147,8 +148,8 @@ bg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>342</x>
-      <y>432</y>
+      <x>351</x>
+      <y>459</y>
       <w>27</w>
       <h>90</h>
     </coordinates>
@@ -159,8 +160,8 @@ bg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>540</y>
+      <x>540</x>
+      <y>567</y>
       <w>72</w>
       <h>27</h>
     </coordinates>
@@ -171,8 +172,8 @@ bg=BLACK</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>369</x>
-      <y>1008</y>
+      <x>378</x>
+      <y>1035</y>
       <w>171</w>
       <h>54</h>
     </coordinates>
@@ -185,8 +186,8 @@ bg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>1026</y>
+      <x>540</x>
+      <y>1053</y>
       <w>72</w>
       <h>27</h>
     </coordinates>
@@ -197,8 +198,8 @@ bg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>342</x>
-      <y>909</y>
+      <x>351</x>
+      <y>936</y>
       <w>261</w>
       <h>27</h>
     </coordinates>
