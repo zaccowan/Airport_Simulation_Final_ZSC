@@ -248,6 +248,7 @@ public class Airport extends TimerTask {
 		for( Airplane plane : planesApproaching ) {
 			System.out.print("\t" + plane.toString() + "\n");
 		}
+		printBlankHolders(6, planesApproaching.size());
 		System.out.println();
 		
 		printLine(45, "*");
@@ -259,7 +260,7 @@ public class Airport extends TimerTask {
 				if( simTime > 0 ) { 
 					runway.setGlobalSimTime(simTime); 
 				}
-				if( (simTime > 0) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
+				if( (simTime > runway.getGlobalSimTime()-1) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
 					runway.planeProcessed();
 				}
 			}
@@ -267,6 +268,7 @@ public class Airport extends TimerTask {
 				setRunwaysEmpty(getRunwaysEmpty() + 1);
 			}
 			runway.printWaitingQueue();
+			printBlankHolders(4, runway.numberInWait());
 			System.out.println();
 			printLine(45, "-");
 		}
@@ -439,6 +441,12 @@ public class Airport extends TimerTask {
 			System.out.println();
 		}
 		System.out.println();
+	}
+	
+	public static void printBlankHolders(int rowsToTake, int lenghtOfObject) {
+		for( int rows = 0 ; rows < rowsToTake - lenghtOfObject ; rows++ ) {
+			System.out.println();
+		}
 	}
 	
 	/**
