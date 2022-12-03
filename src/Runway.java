@@ -71,6 +71,7 @@ public class Runway {
 	 */
 	public void printWaitingQueue() {
 		System.out.println("Runway " + runwayId + ":");
+		System.out.println("Runway relative time:\t" + getTimeOfFirstPlane());
 		for( Airplane plane : readyToLand ) {
 			System.out.print("\tPlane " + plane.toString() + "\n");
 		}
@@ -83,6 +84,7 @@ public class Runway {
 		if( (readyToLand.peek().getDistance() == 0) || (readyToLand.peek().isEmergency())) {
 			numPlanesProcessed++;
 			previousLanded = readyToLand.poll();
+			setTimeHasBeenSet(true);
 			return previousLanded;
 		}
 		return null;
@@ -169,14 +171,6 @@ public class Runway {
 	}
 
 	/**
-	 * Set the time needed to land a plane.
-	 * @param LANDING_TIME_SEC Time in seconds
-	 */
-	public void setLANDING_TIME_SEC(int LANDING_TIME_SEC) {
-		LANDING_TIME_SEC = LANDING_TIME_SEC;
-	}
-
-	/**
 	 * Get the flag that identifies that a runway has had a time set for first plane received.
 	 * Prevents overwriting of the initial time.
 	 * @return True if timeOfFirstPlane has been set.
@@ -192,6 +186,14 @@ public class Runway {
 	 */
 	public void setTimeHasBeenSet(boolean timeHasBeenSet) {
 		this.timeHasBeenSet = timeHasBeenSet;
+	}
+	
+	/**
+	 * Get the number of planes assigned to land at runway.
+	 * @return Size of runway readly to land queue
+	 */
+	public int numberInWait() {
+		return readyToLand.size();
 	}
 
 	

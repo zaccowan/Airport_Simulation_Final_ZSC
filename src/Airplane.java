@@ -39,11 +39,9 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 			milesFromAirport--;;
 		} else if( milesFromAirport == 0 ) {
 			setHasArrived(true);
-			cancel();
 		}
 		if( isEmergency() ) {
 			setDistance(0);
-			setHasArrived(true);
 		}
 		
 	}
@@ -70,7 +68,7 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 	 */
 	public String toString() {
 		String message = "Plane " + String.valueOf(getPlaneId()) + " is " + String.valueOf(milesFromAirport) + " miles away.";
-		if( hasArrived ) {
+		if( hasArrived && !isEmergency ) {
 			message = "Plane " + String.valueOf(getPlaneId()) + " is at airport.";
 		} else if( isEmergency ) {
 			message = "Plane " + String.valueOf(getPlaneId()) + " emergency landing";
@@ -142,9 +140,6 @@ public class Airplane extends TimerTask implements Comparable<Airplane> {
 	 */
 	@Override
 	public int compareTo(Airplane o) {
-		if( this.isEmergency() ) {
-			return -2;
-		}
 		if( this.getDistance() < o.getDistance() ) {
 			return -1;
 		} else if( this.getDistance() > o.getDistance() ) {
