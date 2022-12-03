@@ -443,6 +443,11 @@ public class Airport extends TimerTask {
 		System.out.println();
 	}
 	
+	/**
+	 * Prints blank lines so that changes in number of items being printed does not cause scrolling.
+	 * @param rowsToTake Rows in console to take
+	 * @param lenghtOfObject lenght of the object being printed
+	 */
 	public static void printBlankHolders(int rowsToTake, int lenghtOfObject) {
 		for( int rows = 0 ; rows < rowsToTake - lenghtOfObject ; rows++ ) {
 			System.out.println();
