@@ -414,12 +414,23 @@ public class Airport extends TimerTask {
 	}
 	
 	
+	/**
+	 * Print a line in the console
+	 * @param lineLength Length to print line in console
+	 * @param character Character to display as line points
+	 */
 	public static void printLine(int lineLength, String character) {
 		for( int col = 0 ; col < lineLength ; col++ ) {
 			System.out.print(character + " ");
 		}
 		System.out.println();
 	}
+	/**
+	 * Print a block in the console.
+	 * @param blockWidth Width of block to print in console
+	 * @param blockHeight Height of block to print in console
+	 * @param character Character to fill the block
+	 */
 	public static void printBlock(int blockWidth, int blockHeight, String character) {
 		for( int row = 0 ; row < blockHeight ; row++ ) {
 			for( int col = 0 ; col < blockWidth ; col++ ) {

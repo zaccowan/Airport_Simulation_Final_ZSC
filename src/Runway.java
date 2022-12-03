@@ -202,9 +202,18 @@ public class Runway {
 	public int numberInWait() {
 		return readyToLand.size();
 	}
+	/**
+	 * Get the global simulation time
+	 * @return Get the simTime of a bigger game loop.
+	 */
 	public int getGlobalSimTime() {
 		return globalSimTime;
 	}
+	
+	/**
+	 * Set the global simulation time
+	 * @param globalSimTime Is given to a runway object by a parent, in this case airport.
+	 */
 	public void setGlobalSimTime(int globalSimTime) {
 		this.globalSimTime = globalSimTime;
 	}
