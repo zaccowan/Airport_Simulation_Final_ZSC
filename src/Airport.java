@@ -260,7 +260,7 @@ public class Airport extends TimerTask {
 				if( simTime > 0 ) { 
 					runway.setGlobalSimTime(simTime); 
 				}
-				if( (simTime > runway.getGlobalSimTime()-1) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
+				if( (simTime > runway.getLANDING_TIME_SEC()-1) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
 					runway.planeProcessed();
 				}
 			}
