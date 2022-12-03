@@ -240,16 +240,25 @@ public class Airport extends TimerTask {
 			}
 		}
 		
-		System.out.println("Simulation time (seconds):\t" + simTime + "\n\n");
+		System.out.println("Simulation time (seconds):\t" + simTime);
+		System.out.println("Runway processing time (seconds):\t" + runwayStorage[0].getLANDING_TIME_SEC() + "\n");
+		printLine(45, "*");
+		
 		System.out.println("Planes Approaching:");
 		for( Airplane plane : planesApproaching ) {
 			System.out.print("\t" + plane.toString() + "\n");
 		}
+		System.out.println();
+		
+		printLine(45, "*");
 		
 		//Printing Runway Queues and Processing planes on runway
 		setRunwaysEmpty(0);
 		for( Runway runway : runwayStorage) {
 			if( !runway.isEmpty() ) {
+				if( simTime > 0 ) { 
+					runway.setGlobalSimTime(simTime); 
+				}
 				if( (simTime > 0) && ((simTime - runway.getTimeOfFirstPlane()) % runway.getLANDING_TIME_SEC() == 0) ) {
 					runway.planeProcessed();
 				}
@@ -257,14 +266,16 @@ public class Airport extends TimerTask {
 			if( runway.isEmpty() && (simTime > 5)) {
 				setRunwaysEmpty(getRunwaysEmpty() + 1);
 			}
-//			if( runway.getTimeHasBeenSet() ) {
-//				System.out.println("Plane Processing Time:" + (simTime - runway.getTimeOfFirstPlane()));
-//			}
 			runway.printWaitingQueue();
+			System.out.println();
+			printLine(45, "-");
 		}
+		System.out.println("Runways empty: " + getRunwaysEmpty());
+		System.out.println("Runways avaliable: " + runwayStorage.length);
 		
+		//
 		//Ends the simulation when all planes processed
-		if( (getRunwaysEmpty() == runwayStorage.length) && planesApproaching.isEmpty() ) {
+		if( (getRunwaysEmpty() == runwayStorage.length) && planesApproaching.isEmpty() && (planeNum == MAX_PLANES+1) ) {
 			clear();
 			System.out.println("Finished simulation!"
 					+ "\n\n"
@@ -403,7 +414,21 @@ public class Airport extends TimerTask {
 	}
 	
 	
-	
+	public static void printLine(int lineLength, String character) {
+		for( int col = 0 ; col < lineLength ; col++ ) {
+			System.out.print(character + " ");
+		}
+		System.out.println();
+	}
+	public static void printBlock(int blockWidth, int blockHeight, String character) {
+		for( int row = 0 ; row < blockHeight ; row++ ) {
+			for( int col = 0 ; col < blockWidth ; col++ ) {
+				System.out.print(character + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 	
 	/**
 	 * Method to clear command line output

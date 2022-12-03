@@ -38,6 +38,11 @@ public class Runway {
 	 * Stores the number of planes processed by a runway.
 	 */
 	private int numPlanesProcessed = 0;
+	
+	/**
+	 * Stores the main simTime from the Airport simulation loop.
+	 */
+	private int globalSimTime = 0;
 	/**
 	 * Stores the time in seconds at which a Runway object first recieved its first plane.
 	 */
@@ -71,7 +76,9 @@ public class Runway {
 	 */
 	public void printWaitingQueue() {
 		System.out.println("Runway " + runwayId + ":");
-		System.out.println("Runway relative time:\t" + getTimeOfFirstPlane());
+		if( (getGlobalSimTime() != 0) ) {
+			System.out.println("Time processing:" + ((getGlobalSimTime() - getTimeOfFirstPlane()) % getLANDING_TIME_SEC()) );			
+		}
 		for( Airplane plane : readyToLand ) {
 			System.out.print("\tPlane " + plane.toString() + "\n");
 		}
@@ -194,6 +201,12 @@ public class Runway {
 	 */
 	public int numberInWait() {
 		return readyToLand.size();
+	}
+	public int getGlobalSimTime() {
+		return globalSimTime;
+	}
+	public void setGlobalSimTime(int globalSimTime) {
+		this.globalSimTime = globalSimTime;
 	}
 
 	
